@@ -15,6 +15,8 @@ end
 
 # ╔═╡ 11fa4afe-131c-11eb-0207-1587f2b52fd4
 begin
+	import Pkg
+	Pkg.add("PlutoUI")
 	using PlutoUI
 	
 	"""
