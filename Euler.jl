@@ -16,8 +16,19 @@ end
 # ╔═╡ 11fa4afe-131c-11eb-0207-1587f2b52fd4
 begin
 	import Pkg
+	
+	# Interactivity
 	Pkg.add("PlutoUI")
 	using PlutoUI
+	
+	# Set display of equations
+	Pkg.add("Latexify")
+	using Latexify
+	set_default(cdot = false, fmt=FancyNumberFormatter(3))
+	
+	# Plots
+	Pkg.add("Plots")
+	using Plots
 	
 	"""
 	Log-scale Slider
@@ -81,10 +92,6 @@ begin
 	# Analytical solution yₜ(x) = ...
 	yₜ⁼ = :(y₀*exp(-(x/$τ)) + $y∞ * (1 - exp(-(x/$τ))))
 	
-	# Set display of equations
-	using Latexify
-	set_default(cdot = false, fmt=FancyNumberFormatter(3))
-	
 	y₀_min = -30
 	y₀_max = 30
 	Δy₀ = 1
@@ -120,8 +127,6 @@ end;
 
 # ╔═╡ 9c183d40-1314-11eb-0b66-5f4d06a8b721
 begin
-	# Plots
-	using Plots
 	
 	xₜ = 0:0.001:xᶠ
 	plot(xₜ, yₜ.(xₜ), label = "Analytical solution")
