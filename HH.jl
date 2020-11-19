@@ -16,6 +16,11 @@ end
 # ╔═╡ b63cade0-22bf-11eb-1847-bb0e34bcaeaf
 begin
 	#Imports
+	import Pkg
+	Pkg.add("PlutoUI")
+	Pkg.add("Latexify")
+	Pkg.add("DifferentialEquations")
+	Pkg.add("Plots")
 	using PlutoUI
 	using Latexify
 	using DifferentialEquations
