@@ -16,6 +16,8 @@ All notebooks are written in [julia](https://julialang.org/) using [Pluto.jl](ht
 
 ## Run a notebook locally
 
+***If you encounter any problems with the installation process, either run the notebooks online or google your error and deal with it yourself. We cannot provide technical support.***
+
 ### Install [julia](https://julialang.org/) and [Pluto.jl](https://github.com/fonsp/Pluto.jl)
 
 Follow the instructions [here](https://www.youtube.com/watch?v=OOjKEgbt8AI) or [here](https://github.com/fonsp/Pluto.jl#Installation). 
