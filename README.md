@@ -23,11 +23,9 @@ Follow the instructions [here](https://www.youtube.com/watch?v=OOjKEgbt8AI) or [
 ### Run a notebook
 
 - Open a julia REPL ("command window") and type: 
-
     ```julia
     import Pluto; Pluto.run()
     ```
-
 - Choose a notebook (either a URL or a local path). 
 - Play with the notebook!
 
