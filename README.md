@@ -11,7 +11,7 @@ All notebooks are written in [julia](https://julialang.org/) using [Pluto.jl](ht
 - Go have a coffee, this will take some time. 
 - Play with the notebook!
 
-**Note:** Running Pluto notebooks via binder is ***slow*** (especially at loading). Some notebooks *might even fail to load* due to timeouts. Try running *locally* if possible. 
+**Note:** Running Pluto.jl notebooks via [Binder](https://mybinder.org/) is ***slow*** (especially at loading). Some notebooks *might even fail to load* due to timeouts. Try running *locally* if possible. 
 
 
 ## Run a notebook locally
