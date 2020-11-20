@@ -176,7 +176,7 @@ md"""
 The **partial derivative** of the multivariable function ``f\left(x,y\right)`` with respect to ``x`` at the point ``\left(x_0, y_0\right)`` is defined by keeping ``y`` constant at ``y_0``, thus effectively turning ``f\left(x, y\right)`` into a *single variable* function ``f\left(x, y_0\right)``: 
 
 ```math
-\left. \frac{\partial f}{\partial x}\right\vert_{\left(x_0, y_0\right)} = \left. \frac{d}{dx} f\left(x, y_0\right) \right|_{x = x_0}= \lim_{h\to 0} {\frac{f\left(x_0 + h, y_0\right) - f\left(x_0, y_0\right)}{h}}.
+\left. \frac{\partial f}{\partial x}\right\vert_{\left(x_0, y_0\right)} = \left. \frac{\mathrm{d}}{\mathrm{d}x} f\left(x, y_0\right) \right|_{x = x_0}= \lim_{h\to 0} {\frac{f\left(x_0 + h, y_0\right) - f\left(x_0, y_0\right)}{h}}.
 ```
 
 **Note:** The notation ``\partial`` is pronounced *"dee"* (same as a regular ``\mathrm{d}``), but in mathematics it is used for different purposes.  We will use ``\mathrm{d}`` for regular derivatives and ``\partial`` for partial derivatives. In MS Word or ``\LaTeX`` use `\partial` to produce it. 
@@ -184,7 +184,7 @@ The **partial derivative** of the multivariable function ``f\left(x,y\right)`` w
 Similarly, the partial derivative of ``f\left(x,y\right)`` with respect to ``y`` at the point ``\left(x_0, y_0\right)`` is defined by keeping ``x`` constant at ``x_0``: 
 
 ```math
-\left. \frac{\partial f}{\partial y}\right\vert_{\left(x_0, y_0\right)} = \left. \frac{d}{dy} f\left(x_0, y\right) \right|_{y = y_0}= \lim_{h\to 0} {\frac{f\left(x_0, y_0 + h\right) - f\left(x_0, y_0\right)}{h}}.
+\left. \frac{\partial f}{\partial y}\right\vert_{\left(x_0, y_0\right)} = \left. \frac{\mathrm{d}}{\mathrm{d}y} f\left(x_0, y\right) \right|_{y = y_0}= \lim_{h\to 0} {\frac{f\left(x_0, y_0 + h\right) - f\left(x_0, y_0\right)}{h}}.
 ```
 
 Let's have a look at these derivatives! 
