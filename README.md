@@ -7,13 +7,13 @@ All notebooks are written in [julia](https://julialang.org/) using [Pluto.jl](ht
 ## Run a notebook online
 
 - Copy the notebook's URL and paste it [here](http://pluto-on-binder.glitch.me/). 
-<div class="glitch-embed-wrap" style="height: 486px; width: 100%;">
-  <iframe
-    src="https://glitch.com/embed/#!/embed/pluto-on-binder?previewSize=100&previewFirst=true&sidebarCollapsed=true"
-    alt="pluto-on-binder on Glitch"
-    style="height: 100%; width: 100%; border: 0;">
-  </iframe>
-</div>
+    <div class="glitch-embed-wrap" style="height: 486px; width: 100%;">
+      <iframe
+        src="https://glitch.com/embed/#!/embed/pluto-on-binder?previewSize=100&previewFirst=true&sidebarCollapsed=true"
+        alt="pluto-on-binder on Glitch"
+        style="height: 100%; width: 100%; border: 0;">
+      </iframe>
+    </div>
 - Open the output link. 
 - Go have a coffee, this will take some time. 
 - Play with the notebook!
