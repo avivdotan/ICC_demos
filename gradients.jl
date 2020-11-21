@@ -21,6 +21,7 @@ begin
 	Pkg.add("Latexify")
 	Pkg.add("ForwardDiff")
 	Pkg.add("Plots")
+	Pkg.add("PlotlyJS")
 	using PlutoUI
 	using Latexify
 	using ForwardDiff
@@ -415,7 +416,7 @@ md"""
 The **directional derivative** of ``f\left(x,y\right)`` with respect to a *unit vector* ``u=\left(u_1, u_2\right)`` at a point ``\left(x_0, y_0\right)`` is defined by keeping the function constant in any direction orthogonal to ``u``, thus essentially turning ``f\left(x, y\right)`` into a *single variable* function (similarly to *partial derivatives*): 
 
 ```math
-\left. D_{\vec{u}}f \right\vert_{\left(x_0, y_0\right)} = \left. \frac{\partial f}{\partial s}\right\vert_{\vec{u}, \left(x_0, y_0\right)} = \lim_{s\to 0} {\frac{f\left(x_0 + s\cdot u_1, y_0 + s\cdot u_2\right) - f\left(x_0, y_0\right)}{s}}\qquad \text{where } \left\Vert u\right\Vert = 1.
+\left. D_{\vec{u}}f \right\vert_{\left(x_0, y_0\right)} = \left. \frac{\mathrm{d} f}{\mathrm{d} s}\right\vert_{\vec{u}, \left(x_0, y_0\right)} = \lim_{s\to 0} {\frac{f\left(x_0 + s\cdot u_1, y_0 + s\cdot u_2\right) - f\left(x_0, y_0\right)}{s}}\qquad \text{where } \left\Vert u\right\Vert = 1.
 ```
 	
 **Note:** the *directional derivative* ``\left. D_{\left(1, 0\right)}f  \right\vert_{\left(x_0, y_0\right)}`` actually coincides with the definition of the *partial derivative* ``\left. \frac{\partial f}{\partial x} \right\vert_{\left(x_0, y_0\right)}``. Similarly, ``\left. D_{\left(0, 1\right)}f  \right\vert_{\left(x_0, y_0\right)} = \left. \frac{\partial f}{\partial y} \right\vert_{\left(x_0, y_0\right)}``.
