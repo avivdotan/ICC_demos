@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.10
+# v0.12.11
 
 using Markdown
 using InteractiveUtils
@@ -21,7 +21,6 @@ begin
 	Pkg.add("Latexify")
 	Pkg.add("ForwardDiff")
 	Pkg.add("Plots")
-	Pkg.add("PlotlyJS")
 	using PlutoUI
 	using Latexify
 	using ForwardDiff
@@ -103,7 +102,7 @@ begin
 	md"""
 	``f(x,y) = `` $(latexify(fₑₓ))
 	
-	**Note:** ``z``-axiz is automatically  *shifted* and *rescaled* for display purposes.
+	**Note:** ``z``-axiz is automatically  *shifted* and *rescaled* for visualization purposes.
 	
 	"""
 end
@@ -139,7 +138,7 @@ begin
 		
 		# 2D plot
 		p2d = contour(gx, gy, (x, y) -> f([x, y]),
-			color = cmap, levels = 40, 
+			color = cmap, levels = 40,
 			aspect_ratio = :equal,
 			xlim = (-box_lim, box_lim), ylim = (-box_lim, box_lim), 
 			xlabel = "x", ylabel = "y", 
@@ -213,20 +212,20 @@ begin
 		# 3D plot
 		plot!(x₀ .+ s*u[1], y₀ .+ s*u[2], 
 			f.([[x₀ .+ sᵢ*u[1], y₀ .+ sᵢ*u[2]] for sᵢ ∈ s]), 
-			linetype = :path3d, linewidth = 3,
+			linetype = :path3d, linewidth = 5,
 			color = col, 
 			label = "")
 		lin_app = f([x₀, y₀]) .+ ∇f([x₀, y₀])'*u*s
 		ind = (0 .<= lin_app .<= z_lim)
 		plot!(p3d, x₀ .+ s[ind]*u[1], y₀ .+ s[ind]*u[2], 
 			lin_app[ind],
-			seriescolor = col, linewidth = 2, linestyle = :dash,
+			seriescolor = col, linewidth = 5, linestyle = :dash,
 			label = "")
 		plot!([x₁, x₁, x₂, x₂, x₁],
 			  [y₁, y₁, y₂, y₂, y₁],
 			  [0, z_lim, z_lim, 0, 0], 
 			seriestype = :path3d,
-			seriescolor = col, linewidth = 3, fill = 0,
+			seriescolor = col, linewidth = 5, fill = 0,
 			label = "")
 		
 	end
@@ -244,7 +243,7 @@ begin
 	
 		# 2D plot
 		plot!(p2d, [x₁, x₂], [y₁, y₂], 
-			linecolor = col, linewidth = 1.5, linestyle = :dash,
+			linecolor = col, linewidth = 3, linestyle = :dash,
 			label = "")
 		quiver!(p2d, [x₀], [y₀], quiver = [(3u..., )],
 			linecolor = col, linewidth = 5)
@@ -264,12 +263,12 @@ begin
 		
 		# 1D plot
 		p1d = plot(s, [f([x₀ .+ (sᵢ - s₀)*u[1], y₀ .+ (sᵢ - s₀)*u[2]]) for sᵢ ∈ s],
-			seriescolor = col, linewidth = 1.5,
+			seriescolor = col, linewidth = 3,
 			ylim = (0, z_lim),
 			xlabel = "s", ylabel = "f(x₀ + su)",
 			label = "")
 		plot!(p1d, s, f([x₀, y₀]) .+ ∇f([x₀, y₀])'*u*(s .- s₀),
-			seriescolor = col, linewidth = 1, linestyle = :dash,
+			seriescolor = col, linewidth = 2, linestyle = :dash,
 			label = "")
 		scatter!(p1d, [s₀], [f([x₀, y₀])], 
 			markersize = 5, markercolor = x₀_col, 
@@ -413,7 +412,7 @@ end
 md"""
 ## Directional derivative
 
-The **directional derivative** of ``f\left(x,y\right)`` with respect to a *unit vector* ``u`` at a point ``\left(x_0, y_0\right)`` is defined by keeping the function constant in any direction orthogonal to ``u``, thus essentially turning ``f\left(x, y\right)`` into a *single variable* function (similarly to *partial derivatives*): 
+The **directional derivative** of ``f\left(x,y\right)`` with respect to a *unit vector* ``u=\left(u_1, u_2\right)`` at a point ``\left(x_0, y_0\right)`` is defined by keeping the function constant in any direction orthogonal to ``u``, thus essentially turning ``f\left(x, y\right)`` into a *single variable* function (similarly to *partial derivatives*): 
 
 ```math
 \left. D_{\vec{u}}f \right\vert_{\left(x_0, y_0\right)} = \left. \frac{\partial f}{\partial s}\right\vert_{\vec{u}, \left(x_0, y_0\right)} = \lim_{s\to 0} {\frac{f\left(x_0 + s\cdot u_1, y_0 + s\cdot u_2\right) - f\left(x_0, y_0\right)}{s}}\qquad \text{where } \left\Vert u\right\Vert = 1.
@@ -480,13 +479,13 @@ From this we can gain several insights:
 
     - In this case the *directional derivative* will be *nonpositive*, thus the function will usualy **decrease in the direction opposite to that of the gradient**.
 
-- The *gradient* is **perpendicular** the the constant height lines (see contour plots), because the *directional derivative* in their direction must be ``0``, and that is possible *if and only if* ``\cos{\alpha} = 0``. 
+- The *gradient* is **perpendicular** the the level curves (curves of constant height ``f\left(x,y\right) = C``, see contour plots), because the *directional derivative* in their direction must be ``0``, and that is possible *if and only if* ``\cos{\alpha} = 0``. 
 
 Let's have a look at the gradient! Choose a point and a direction:
 \
 ``x_0`` $(@bind x⁰ Slider(-box_lim:0.1:box_lim, default = x₀, show_value = true))
 ``\qquad\qquad\quad``
-``\alpha`` $(@bind αₓ Slider(-1:(1/16):1, default = rand(-1:(1/16):1), show_value = true))π
+``\alpha`` $(@bind αₓ Slider(-1:(1/16):1, default = rand(-(1 - (1/16)):(1/16):(1 - (1/16))), show_value = true))π
 \
 ``y_0`` $(@bind y⁰ Slider(-box_lim:0.1:box_lim, default = y₀, show_value = true))
 """
@@ -536,7 +535,7 @@ begin
 	∇ᶠ ./= maximum(norm.(∇ᶠ))
 	∇ᶠ = [(gf..., ) for gf ∈ ∇ᶠ]
 	quiver!(hcat([xg for y ∈ yg]...), vcat([yg' for x ∈ xg]...), quiver = ∇ᶠ, 
-		linecolor = plot_cols[7])
+		linecolor = plot_cols[7], linewidth = 1.5)
 end
 
 # ╔═╡ Cell order:
