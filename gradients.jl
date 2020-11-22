@@ -104,7 +104,6 @@ begin
 	``f(x,y) = `` $(latexify(fₑₓ))
 	
 	**Note:** ``z``-axiz is automatically  *shifted* and *rescaled* for visualization purposes.
-	
 	"""
 end
 
