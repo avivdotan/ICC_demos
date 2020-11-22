@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.10
+# v0.12.11
 
 using Markdown
 using InteractiveUtils
@@ -16,19 +16,16 @@ end
 # ╔═╡ 11fa4afe-131c-11eb-0207-1587f2b52fd4
 begin
 	import Pkg
-	
-	# Interactivity
 	Pkg.add("PlutoUI")
+	Pkg.add("Latexify")
+	Pkg.add("Plots")
 	using PlutoUI
+	using Latexify
+	using Plots
+	
 	
 	# Set display of equations
-	Pkg.add("Latexify")
-	using Latexify
 	set_default(cdot = false, fmt=FancyNumberFormatter(3))
-	
-	# Plots
-	Pkg.add("Plots")
-	using Plots
 	
 	"""
 	Log-scale Slider
@@ -70,7 +67,7 @@ begin
 	Δy∞ = 1
 	
 	md"""
-	### Euler method demo
+	# Euler Method - Demo
 	
 	
 	Time constant ``\tau`` $(@bind τ Slider(τ_min:Δτ:τ_max, default = 3, show_value = true))
@@ -125,8 +122,17 @@ begin
 	y[1] = y₀
 end;
 
+# ╔═╡ 8a45b570-1314-11eb-03ab-0111c5a17e22
+begin
+	# Euler method
+	for n = 1:(length(y) - 1)
+		y[n + 1] = y[n] + f(x[n], y[n])*Δx
+	end
+end;
+
 # ╔═╡ 9c183d40-1314-11eb-0b66-5f4d06a8b721
 begin
+	# Plots
 	
 	xₜ = 0:0.001:xᶠ
 	plot(xₜ, yₜ.(xₜ), label = "Analytical solution")
@@ -136,14 +142,6 @@ begin
 	xlabel!("x")
 	ylabel!("y")
 end
-
-# ╔═╡ 8a45b570-1314-11eb-03ab-0111c5a17e22
-begin
-	# Euler method
-	for n = 1:(length(y) - 1)
-		y[n + 1] = y[n] + f(x[n], y[n])*Δx
-	end
-end;
 
 # ╔═╡ Cell order:
 # ╟─11fa4afe-131c-11eb-0207-1587f2b52fd4
