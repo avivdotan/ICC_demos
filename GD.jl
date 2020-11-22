@@ -40,7 +40,7 @@ begin
 	z_lim = 10
 	
 	md"""
-	## Gradient Descent
+	# Gradient Descent - Demo
 	"""
 end
 
@@ -109,9 +109,9 @@ begin
 	**Note:** ``z``-axiz is automatically  *shifted* and *rescaled* for visualization purposes.
 	
 	``\:`` $(@bind redraw_w₀ Button("Draw initial guess"))
-	``\qquad\quad``
+	``\qquad``
 	``\eta`` $(@bind η Slider(0.1:0.1:10, default = 1, show_value = true))
-	``\qquad\quad``
+	``\qquad``
 	\# of steps $(@bind T Slider(0:1000, default = 0, show_value = true))
 	"""
 end
