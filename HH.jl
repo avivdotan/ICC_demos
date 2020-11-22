@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.3
+# v0.12.11
 
 using Markdown
 using InteractiveUtils
@@ -26,6 +26,19 @@ begin
 	using DifferentialEquations
 	using Plots
 end
+
+# ╔═╡ df43c2f0-22bf-11eb-159d-3f3148d2003c
+begin
+	# Set parameters
+	C = 1 			#[μF/cm²]
+	V_rest = -60 	#[mV]
+	V_Na = 55.17 	#[mV]
+	V_K = -72.14 	#[mV]
+	V_l = -49.42 	#[mV]
+	g_Na = 120		#[mS/cm²]
+	g_K = 36 		#[mS/cm²]
+	g_l = 0.3 		#[mS/cm²]
+end;
 
 # ╔═╡ 20e11820-22c0-11eb-36e6-1716f7dd2a93
 """
@@ -185,10 +198,48 @@ begin
 	
 end;
 
+# ╔═╡ 59dbfb30-22c6-11eb-22de-893b89c449c3
+begin
+	# Plots
+	gr(size = (675, 450))
+	
+	# Current
+	p_I = plot(I, xlim = tspan, ylim = (I₀_min, I₀_max), label = "")
+	ylabel!("\$I \\enspace \\left[\\frac{\\mu A}{{cm}^2}\\right]\$")
+	
+	# Voltage
+	p_V = plot(sol, vars = (0, 1), label = "")
+	ylims!(V_K + min(I₀_min, 0)/g_l, V_Na)
+	ylabel!("\$V \\enspace \\left[mV\\right]\$")
+	xlabel!("")
+	
+	# Conductances
+	n = [sol.u[i][2] for i ∈ 1:length(sol.u)]
+	m = [sol.u[i][3] for i ∈ 1:length(sol.u)]
+	h = [sol.u[i][4] for i ∈ 1:length(sol.u)]
+	p_g = plot(sol.t, g_K.*n.^4, label = "\$g_K\$")
+	plot!(sol.t, g_Na.*h.*m.^3, label = "\$g_{Na}\$")
+	ylims!(0, 50)
+	ylabel!("\$g \\enspace \\left[\\frac{mS}{{cm}^2}\\right]\$")
+	
+	# Gates
+	p_x = plot(sol, vars = (0, 2), label = "\$n\$")
+	plot!(sol, vars = (0, 3), label = "\$m\$")
+	plot!(sol, vars = (0, 4), label = "\$h\$")
+	ylims!(0, 1)
+	ylabel!("probability")
+	xlabel!("\$t \\enspace \\left[ms\\right]\$")
+	
+	plot(p_I, p_V, p_g, p_x, layout = (4, 1))
+	
+end
+
 # ╔═╡ Cell order:
 # ╟─b63cade0-22bf-11eb-1847-bb0e34bcaeaf
+# ╟─df43c2f0-22bf-11eb-159d-3f3148d2003c
 # ╟─20e11820-22c0-11eb-36e6-1716f7dd2a93
 # ╟─9a409100-22c0-11eb-0fb3-e9792f351784
 # ╟─ef25b370-22c1-11eb-018c-05ae50bd2c15
 # ╟─a36a7a40-22c8-11eb-18a3-93d9128b3017
 # ╟─2a82ed52-22c4-11eb-34ea-c14874528737
+# ╟─59dbfb30-22c6-11eb-22de-893b89c449c3
