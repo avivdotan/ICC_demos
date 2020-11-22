@@ -48,7 +48,7 @@ end
 begin
 	
 	md"""
-	``f\left(x, y\right) = `` $(@bind fₑₓᵗ TextField((80, 1), default = "2x^4 + x^3*y + 2y^4 - 4(x + 5)^3 + 3(y + 7)^3 + 10(x + 5)^2 - 7(y - 7)^2 - 1"))
+	``f\left(x, y\right) = `` $(@bind fₑₓᵗ TextField((75, 1), default = "2x^4 + x^3*y + 2y^4 - 4(x + 5)^3 + 3(y + 7)^3 + 10(x + 5)^2 - 7(y - 7)^2 - 1"))
 	
 	Select a predefined function $(@bind f_type Select(["ex" => "User's", "quad" => "Paraboloid", "2min" => "Two minima", "gmin" => "Simple", "complex" => "Complex"], default = "ex"))
 	"""
