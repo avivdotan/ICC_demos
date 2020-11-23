@@ -16,7 +16,7 @@ All notebooks are written in [julia](https://julialang.org/) using [Pluto.jl](ht
 
 ## Run a notebook locally
 
-***If you encounter any problems in the process, either run the notebooks online or google your error and deal with it yourself. We cannot provide technical support.***
+***If you encounter any problems in the process, either run the notebooks online or google your error and deal with it yourself; we <ins>cannot</ins> provide any technical support.***
 
 ### Install [julia](https://julialang.org/) and [Pluto.jl](https://github.com/fonsp/Pluto.jl)
 
@@ -31,4 +31,4 @@ Follow the instructions [here](https://www.youtube.com/watch?v=OOjKEgbt8AI) or [
 - Choose a notebook (either a URL or a local path). 
 - Play with the notebook!
 
-**Note:** Each notebook will automatically install any missing packages and compile them *on the fly*. This means The **first runs wil be slow**, especially the first run of the first notebook using *Plots.jl* (all notebooks here use it). 
+**Note:** Each notebook will automatically install any missing packages and compile them *on the fly*. This means The **first runs wil be slow**, especially the first run of the first notebook using *[Plots.jl](http://docs.juliaplots.org/latest/)* (all notebooks here use it). 
