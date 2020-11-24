@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.11
+# v0.12.10
 
 using Markdown
 using InteractiveUtils
@@ -207,10 +207,46 @@ begin
 		return s
 	end
 	
+	function t_grid(x, y)
+		# 1D axis
+		dt = 0.01
+		t = -5box_lim:dt:5box_lim
+		t_in(τ) = (-box_lim < x(τ) < box_lim) & 
+			  	  (-box_lim < y(τ) < box_lim)
+		t_ind = t_in.(t)
+		
+		t_lims_ind = []
+		if t_in(t[1])
+			push!(t_lims_ind, 1)
+		end
+		for i = 1:(length(t) - 1)
+			if t_ind[i] ≠ t_ind[i + 1]
+				push!(t_lims_ind, t_in(t[i]) ? i : (i + 1))
+			end
+		end
+		if t_in(t[end])
+			push!(t_lims_ind, length(t))
+		end
+		
+		t_lims = t[t_lims_ind]
+		t = t[t_ind]
+		
+		let i = 1
+			while i < length(t)
+				if t[i] ∈ t_lims && t[i + 1] ∈ t_lims
+					insert!(t, i + 1, NaN)
+				end
+				i += 1
+			end
+		end
+		
+		return t, t_lims
+	end
+	
 	function plot_3d_plane!(p3d, x₀, y₀, u, s, x₁, x₂, y₁, y₂, col)
 
 		# 3D plot
-		plot!(x₀ .+ s*u[1], y₀ .+ s*u[2], 
+		plot!(p3d, x₀ .+ s*u[1], y₀ .+ s*u[2], 
 			f.([[x₀ .+ sᵢ*u[1], y₀ .+ sᵢ*u[2]] for sᵢ ∈ s]), 
 			linetype = :path3d, linewidth = 5,
 			color = col, 
@@ -227,6 +263,34 @@ begin
 			seriestype = :path3d,
 			seriescolor = col, linewidth = 5, fill = 0,
 			label = "")
+		
+	end
+	
+	function plot_3d_trajectory!(p3d, x, y, t, t_lims, col)
+	
+		# 3D plot
+		plot!(p3d, x.(t), y.(t), 
+			f.([[x(tᵢ), y(tᵢ)] for tᵢ ∈ t]), 
+			linetype = :path3d, linewidth = 5,
+			color = col, 
+			label = "")
+		plot!(p3d, x.(t), y.(t), 
+			zeros(size(t)), 
+			linetype = :path3d, linewidth = 5,
+			color = col, 
+			label = "")
+		plot!(p3d, x.(t), y.(t), 
+			z_lim .* ones(size(t)), 
+			linetype = :path3d, linewidth = 5,
+			color = col, 
+			label = "")
+		for tl ∈ t_lims
+			plot!(p3d, x(tl) .* [1, 1], y(tl) .* [1, 1], 
+				[0, z_lim], 
+				linetype = :path3d, linewidth = 5,
+				color = col, 
+				label = "")
+		end
 		
 	end
 	
@@ -247,6 +311,15 @@ begin
 			label = "")
 		quiver!(p2d, [x₀], [y₀], quiver = [(3u..., )],
 			linecolor = col, linewidth = 5)
+		
+	end
+	
+	function plot_2d_trajectory!(p2d, x, y, t, col)
+	
+		# 2D plot
+		plot!(p2d, x.(t), y.(t), 
+			linecolor = col, linewidth = 3,
+			label = "")
 		
 	end
 	
@@ -399,6 +472,63 @@ begin
 		
 	end
 	
+	function plot_chain_rule(x, y, dx, dy, t₀; 
+							 col = plot_cols[1], x₀_col = plot_cols[4])
+
+		# 1D axis
+		t, t_lims = t_grid(x, y)
+		t_in(τ) = (-box_lim < x(τ) < box_lim) & 
+			  	  (-box_lim < y(τ) < box_lim)
+		
+		# 2D axes
+		(gx, gy) = xy_grid()
+
+		# 3D Plot
+		p3d = plot_3d_base(gx, gy)
+		plot_3d_trajectory!(p3d, x, y, t, t_lims, col)
+		if t_in(t₀)
+			plot_3d_point!(p3d, x(t₀), y(t₀), x₀_col)
+		end
+
+		# 2D Plot
+		p2d = plot_2d_base(gx, gy)
+		plot_2d_trajectory!(p2d, x, y, t, col)
+		if t_in(t₀)
+			plot_2d_point!(p2d, x(t₀), y(t₀), x₀_col)
+		end
+
+		# 1D Plot
+		p1d = plot(t, [f([x(tᵢ), y(tᵢ)]) for tᵢ ∈ t],
+			seriescolor = col, linewidth = 3,
+			ylim = (0, z_lim),
+			xlabel = "t", ylabel = "f",
+			label = "")
+		if t_in(t₀)
+			scatter!(p1d, [t₀], [f([x(t₀), y(t₀)])], 
+				markersize = 5, markercolor = x₀_col, 
+				label = "")
+		end
+		title!("f(x(t), y(t))")
+		
+		# 1D Plot - derivative
+		df(τ) = ([dx(τ) dy(τ)] * ∇f([x(τ), y(τ)]))[1]
+		p1d_d = plot(t, df.(t),
+			seriescolor = col, linewidth = 3, linestyle = :dash,
+			xlabel = "t", ylabel = "df/dt",
+			label = "")
+		if t_in(t₀)
+			scatter!(p1d_d, [t₀], [df(t₀)], 
+				markersize = 5, markercolor = x₀_col, 
+				label = "")
+		end
+		title!("d/dt f(x(t), y(t))")
+
+		l = @layout([a{0.7h}; b{0.4w} c d])
+		return plot(p3d, p2d, p1d, p1d_d, layout = l, 
+			leftmargin = 3mm, rightmargin = 3mm)
+		
+	end
+	
 end;
 
 # ╔═╡ 33e9bc80-29f3-11eb-11a7-b1cd60c8ae03
@@ -441,6 +571,58 @@ begin
 	# Plot directional derivative
 	plotlyjs(size = (675, 675))
 	plot_directional(x₀, y₀, θ, col = plot_cols[3])
+end
+
+# ╔═╡ ccd642b0-2d8b-11eb-150a-f1ce567ecee1
+md"""
+## Chain rule
+
+The chain rule for *univariate* functions ``f:\mathbb{R}\to\mathbb{R}`` and ``x:\mathbb{R}\to\mathbb{R}`` states that the derivative of ``f\left(x\left(t\right)\right)`` is:
+
+```math
+f'\left(x\left(t\right)\right)\dot{x}\left(t\right) \qquad \text{or} \qquad \frac{\mathrm{d} f}{\mathrm{d} t} = \frac{\mathrm{d} f}{\mathrm{d} x} \frac{\mathrm{d} x}{\mathrm{d} t}
+```
+
+The chain rule for a *multivariable* function ``f:\mathbb{R}^2\to\mathbb{R}`` and *univariate* functions ``x:\mathbb{R}\to\mathbb{R}`` and ``y:\mathbb{R}\to\mathbb{R}`` states that the derivative of ``f\left(x\left(t\right), y\left(t\right)\right)`` is:
+
+```math
+\frac{\mathrm{d} f}{\mathrm{d} t} = \frac{\partial f}{\mathrm{d} x} \frac{\mathrm{d} x}{\mathrm{d} t} + \frac{\partial f}{\mathrm{d} y} \frac{\mathrm{d} y}{\mathrm{d} t}
+```
+
+The functions ``x(t)`` and ``y(t)`` define a 2-dimentional *trajectory*. The derivative ``\frac{\mathrm{d} f}{\mathrm{d} t}`` is the derivative along this trajectory. 
+
+Let's have a look at ``f`` and its derivative along the trajectory! Choose a trajectory:
+\
+``x(t) = `` $(@bind xₑₓᵗ TextField(default = "5t"))
+``\qquad``
+``y(t) = `` $(@bind yₑₓᵗ TextField(default = "t^3 - 3t"))
+"""
+
+# ╔═╡ e7612a0e-2d8f-11eb-3e0b-8da86e8dc20d
+begin
+	
+	xₑₓ = Meta.parse(xₑₓᵗ)
+	yₑₓ = Meta.parse(yₑₓᵗ)
+	
+	# Convert to x(t), y(t)
+	eval(:(x(t) = $xₑₓ))
+	eval(:(y(t) = $yₑₓ))
+	
+	# Define the derivatives
+	dx(t) = ForwardDiff.derivative(x, t)
+	dy(t) = ForwardDiff.derivative(y, t)
+	
+	md"""
+	``x(t) = `` $(latexify(xₑₓ)) ``\qquad\qquad\qquad\qquad\qquad\quad\, y(t) = `` $(latexify(yₑₓ))
+	
+	``t`` $(@bind t Slider(-10:0.1:10, default = 0, show_value = true))
+	"""
+end
+
+# ╔═╡ e533e6a0-2d8b-11eb-2a42-0fc2f7c7c276
+begin
+	plotlyjs(size = (675, 675))
+	plot_chain_rule(x, y, dx, dy, t; col = plot_cols[6])
 end
 
 # ╔═╡ 744d6c50-2a0b-11eb-02c8-bd9f527a8d42
@@ -549,6 +731,9 @@ end
 # ╟─cb617850-29ee-11eb-2e28-a99ff45f2ed1
 # ╟─a1504642-29ee-11eb-25e9-97312b012e13
 # ╟─b35b9120-29c9-11eb-1e50-8f2c7d0a635d
+# ╟─ccd642b0-2d8b-11eb-150a-f1ce567ecee1
+# ╟─e7612a0e-2d8f-11eb-3e0b-8da86e8dc20d
+# ╟─e533e6a0-2d8b-11eb-2a42-0fc2f7c7c276
 # ╟─744d6c50-2a0b-11eb-02c8-bd9f527a8d42
 # ╟─3c6c8980-2a6d-11eb-2257-bb57b19a9d1f
 # ╟─32e938d0-2a69-11eb-017c-6b53e7d78c2e
