@@ -165,7 +165,7 @@ begin
 		xlim = (-box_lim, box_lim), ylim = (-box_lim, box_lim), zlim = (0, z_lim), 
 		xlabel = "x", ylabel = "y", zlabel = "f(x,y)")
 	quiver!(p3d, w₁, w₂, zeros(size(w₁)), quiver = Δw₃, 
-		linecolor = plot_cols[2])
+		linewidth = 3, linecolor = plot_cols[2])
 	plot!(p3d, w_hist[end][1]*[1, 1], w_hist[end][2]*[1, 1], [0, f(w_hist[end])], 
 		linestyle = :dash, linewidth = 3, linecolor = plot_cols[3],
 		label = "")
