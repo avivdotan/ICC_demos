@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.10
+# v0.12.15
 
 using Markdown
 using InteractiveUtils
@@ -542,10 +542,10 @@ end
 md"""
 ## Directional derivative
 
-The **directional derivative** of ``f\left(x,y\right)`` with respect to a *unit vector* ``u=\left(u_1, u_2\right)`` at a point ``\left(x_0, y_0\right)`` is defined by keeping the function constant in any direction orthogonal to ``u``, thus essentially turning ``f\left(x, y\right)`` into a *single variable* function (similarly to *partial derivatives*): 
+The **directional derivative** of ``f\left(x,y\right)`` with respect to a *unit vector* ``\vec{u}=\left(u_1, u_2\right)`` at a point ``\left(x_0, y_0\right)`` is defined by keeping the function constant in any direction orthogonal to ``\vec{u}``, thus essentially turning ``f\left(x, y\right)`` into a *single variable* function (similarly to *partial derivatives*): 
 
 ```math
-\left. D_{\vec{u}}f \right\vert_{\left(x_0, y_0\right)} = \left. \frac{\mathrm{d} f}{\mathrm{d} s}\right\vert_{\vec{u}, \left(x_0, y_0\right)} = \lim_{s\to 0} {\frac{f\left(x_0 + s\cdot u_1, y_0 + s\cdot u_2\right) - f\left(x_0, y_0\right)}{s}}\qquad \text{where } \left\Vert u\right\Vert = 1.
+\left. D_{\vec{u}}f \right\vert_{\left(x_0, y_0\right)} = \left. \frac{\mathrm{d} f}{\mathrm{d} s}\right\vert_{\vec{u}, \left(x_0, y_0\right)} = \lim_{s\to 0} {\frac{f\left(x_0 + s\cdot u_1, y_0 + s\cdot u_2\right) - f\left(x_0, y_0\right)}{s}}\qquad \text{where } \left\Vert \vec{u} \right\Vert = 1.
 ```
 	
 **Note:** the *directional derivative* ``\left. D_{\left(1, 0\right)}f  \right\vert_{\left(x_0, y_0\right)}`` actually coincides with the definition of the *partial derivative* ``\left. \frac{\partial f}{\partial x} \right\vert_{\left(x_0, y_0\right)}``. Similarly, ``\left. D_{\left(0, 1\right)}f  \right\vert_{\left(x_0, y_0\right)} = \left. \frac{\partial f}{\partial y} \right\vert_{\left(x_0, y_0\right)}``.
@@ -586,7 +586,7 @@ f'\left(x\left(t\right)\right)\dot{x}\left(t\right) \qquad \text{or} \qquad \fra
 The chain rule for a *multivariable* function ``f:\mathbb{R}^2\to\mathbb{R}`` and *univariate* functions ``x:\mathbb{R}\to\mathbb{R}`` and ``y:\mathbb{R}\to\mathbb{R}`` states that the derivative of ``f\left(x\left(t\right), y\left(t\right)\right)`` is:
 
 ```math
-\frac{\mathrm{d} f}{\mathrm{d} t} = \frac{\partial f}{\mathrm{d} x} \frac{\mathrm{d} x}{\mathrm{d} t} + \frac{\partial f}{\mathrm{d} y} \frac{\mathrm{d} y}{\mathrm{d} t}
+\frac{\mathrm{d} f}{\mathrm{d} t} = \frac{\partial f}{\partial x} \frac{\mathrm{d} x}{\mathrm{d} t} + \frac{\partial f}{\partial y} \frac{\mathrm{d} y}{\mathrm{d} t}
 ```
 
 The functions ``x(t)`` and ``y(t)`` define a 2-dimentional *trajectory*. The derivative ``\frac{\mathrm{d} f}{\mathrm{d} t}`` is the derivative along this trajectory. 
