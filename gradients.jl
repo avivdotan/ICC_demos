@@ -681,7 +681,7 @@ begin
 	md"""
 	``\left .\vec{∇}f \right\vert_{\left(x_0, y_0\right)} = (`` $(latexify(∇[1])) ``, `` $(latexify(∇[2])) ``)``
 	``\qquad\quad\!\!``
-	``\vec{u} = (`` $(latexify(cos(θ))) ``, `` $(latexify(sin(θ))) ``)``
+	``\vec{u} = (`` $(latexify(cos(θ⁰))) ``, `` $(latexify(sin(θ⁰))) ``)``
 	
 	**Note:** The displayed *gradient* vector in the contour plot is *rescaled to a unit vector* for better visualization. 
 	"""
