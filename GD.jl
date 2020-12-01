@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.11
+# v0.12.15
 
 using Markdown
 using InteractiveUtils
@@ -19,12 +19,12 @@ begin
 	import Pkg
 	Pkg.add("PlutoUI")
 	Pkg.add("Latexify")
-	Pkg.add("ForwardDiff")
+	Pkg.add("Calculus")
 	Pkg.add("Plots")
 	# Pkg.add("PlotlyJS")
 	using PlutoUI
 	using Latexify
-	using ForwardDiff
+	using Calculus
 	using LinearAlgebra
 	using Plots
 	
@@ -50,7 +50,7 @@ begin
 	md"""
 	``f\left(x, y\right) = `` $(@bind fₑₓᵗ TextField((75, 1), default = "2x^4 + x^3*y + 2y^4 - 4(x + 5)^3 + 3(y + 7)^3 + 10(x + 5)^2 - 7(y - 7)^2 - 1"))
 	
-	Select a predefined function $(@bind f_type Select(["ex" => "User's", "quad" => "Paraboloid", "2min" => "Two minima", "gmin" => "Simple", "complex" => "Complex"], default = "ex"))
+	Select a predefined function $(@bind f_type Select(["ex" => "User's", "quad" => "Paraboloid", "gmin" => "Simple", "2min" => "Two minima", "complex" => "Complex"], default = "ex"))
 	"""
 end
 
@@ -89,6 +89,11 @@ begin
 		
 	end
 	
+	# Get the gradient
+	∇fₑₓ = simplify.(differentiate(simplify(fₑₓ), [:x, :y]))
+	Δxₑₓ = simplify(:(-η * $(∇fₑₓ[1])))
+	Δyₑₓ = simplify(:(-η * $(∇fₑₓ[2])))
+	
 	# Convert to f(x⃗)
 	eval(:(fˣʸ(x, y) = $fₑₓ))
 	fᵗ(x) = fˣʸ(x[1], x[2])
@@ -101,10 +106,18 @@ begin
 	f(x) = 5(1/2 + (fᵗ(x) - f_min)/(f_max - f_min))
 	
 	# Define the gradient
-	∇f(x) = ForwardDiff.gradient(f, x)
+	∇f(x) = Calculus.gradient(f, x)
 	
 	md"""
-	``f(x,y) = `` $(latexify(fₑₓ))
+	``f\left(x,y\right) = `` $(latexify(fₑₓ))
+	
+	 $(latexify(:(∇f = $∇fₑₓ)))
+	
+	Update rules:
+	\
+	 $(latexify(:(Δx = $Δxₑₓ)))
+	\
+	 $(latexify(:(Δy = $Δyₑₓ)))
 	
 	**Note:** ``z``-axiz is automatically  *shifted* and *rescaled* for visualization purposes.
 	
@@ -138,7 +151,30 @@ begin
 		w .-= η*∇f(w)
 		push!(w_hist, copy(w))
 	end
-end;
+	
+	curr_∇f = ∇f(w)
+	next_Δw = -η*curr_∇f
+	
+	md"""
+	Current position: 
+	\
+	``x = `` $(latexify(w[1]))
+	``\qquad``
+	``y = `` $(latexify(w[2]))
+	
+	Current gradient: 
+	\
+	``\frac{\partial f}{\partial x} = `` $(latexify(curr_∇f[1]))
+	``\qquad``
+	``\frac{\partial f}{\partial y} = `` $(latexify(curr_∇f[2]))
+	
+	Next update: 
+	\
+	``Δx = `` $(latexify(next_Δw[1]))
+	``\qquad``
+	``Δy = `` $(latexify(next_Δw[2]))
+	"""
+end
 
 # ╔═╡ 30ee8b80-269e-11eb-1d38-6928957188f3
 begin
