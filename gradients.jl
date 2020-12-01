@@ -13,13 +13,6 @@ macro bind(def, element)
     end
 end
 
-# ╔═╡ 08778ee0-2a77-11eb-296c-453f1932bf58
-md"""
-Now we can have a look at the gradients of ``f(x,y)`` at many different points simultaneously: 
-
-**Note:** The displayed *gradient* vectors are *rescaled* for better visualization. 
-"""
-
 # ╔═╡ 6fa8a130-29af-11eb-0f35-776973ddd076
 begin
 	# Imports
@@ -46,21 +39,304 @@ begin
 	# Playground limits
 	box_lim = 10
 	z_lim = 10
+end;
+
+# ╔═╡ 1fab33c0-3425-11eb-2b32-55fc7cc5a06d
+md"""
+# Partial Derivatives, Directional Derivatives and Gradients
+
+## Multivariable functions
+
+**Multivariable functions**  are mappings of inputs from a high-dimensional domain to the real line, *i.e.* ``f:\mathbb{R}^n\to\mathbb{R}``. For simplicity, we will focus here on functions from a 2-dimensional domain, *i.e.*  ``f:\mathbb{R}^2\to\mathbb{R}``, though the definitions and results are quite general. 
+"""
+
+# ╔═╡ 859be820-29ec-11eb-2053-97a2830c8a8d
+md"""
+## Partial derivatives
+
+The **partial derivative** of the multivariable function ``f\left(x,y\right)`` with respect to ``x`` at the point ``\left(x_0, y_0\right)`` is defined by keeping ``y`` constant at ``y_0``, thus effectively turning ``f\left(x, y\right)`` into a *single variable* function ``f\left(x, y_0\right)``: 
+
+```math
+\left. \frac{\partial f}{\partial x}\right\vert_{\left(x_0, y_0\right)} = \left. \frac{\mathrm{d}}{\mathrm{d}x} f\left(x, y_0\right) \right|_{x = x_0}= \lim_{h\to 0} {\frac{f\left(x_0 + h, y_0\right) - f\left(x_0, y_0\right)}{h}}.
+```
+
+**Note:** The notation ``\partial`` is pronounced *"dee"* (same as a regular ``\mathrm{d}``), but in mathematics it is used for different purposes.  We will use ``\mathrm{d}`` for regular derivatives and ``\partial`` for partial derivatives. In MS Word or ``\LaTeX`` use `\partial` to produce it. 
+
+Similarly, the partial derivative of ``f\left(x,y\right)`` with respect to ``y`` at the point ``\left(x_0, y_0\right)`` is defined by keeping ``x`` constant at ``x_0``: 
+
+```math
+\left. \frac{\partial f}{\partial y}\right\vert_{\left(x_0, y_0\right)} = \left. \frac{\mathrm{d}}{\mathrm{d}y} f\left(x_0, y\right) \right|_{y = y_0}= \lim_{h\to 0} {\frac{f\left(x_0, y_0 + h\right) - f\left(x_0, y_0\right)}{h}}.
+```
+"""
+
+# ╔═╡ cb617850-29ee-11eb-2e28-a99ff45f2ed1
+md"""
+## Directional derivative
+
+The **directional derivative** of ``f\left(x,y\right)`` with respect to a *unit vector* ``\vec{u}=\left(u_1, u_2\right)`` at a point ``\left(x_0, y_0\right)`` is defined by keeping the function constant in any direction orthogonal to ``\vec{u}``, thus essentially turning ``f\left(x, y\right)`` into a *single variable* function (similarly to *partial derivatives*): 
+
+```math
+\left. D_{\vec{u}}f \right\vert_{\left(x_0, y_0\right)} = \left. \frac{\mathrm{d} f}{\mathrm{d} s}\right\vert_{\vec{u}, \left(x_0, y_0\right)} = \lim_{s\to 0} {\frac{f\left(x_0 + s\cdot u_1, y_0 + s\cdot u_2\right) - f\left(x_0, y_0\right)}{s}}\qquad \text{where } \left\Vert \vec{u} \right\Vert = 1.
+```
 	
-	md"""
-	# Partial Derivatives, Directional Derivatives and Gradients
+**Note:** the *directional derivative* ``\left. D_{\left(1, 0\right)}f  \right\vert_{\left(x_0, y_0\right)}`` actually coincides with the definition of the *partial derivative* ``\left. \frac{\partial f}{\partial x} \right\vert_{\left(x_0, y_0\right)}``. Similarly, ``\left. D_{\left(0, 1\right)}f  \right\vert_{\left(x_0, y_0\right)} = \left. \frac{\partial f}{\partial y} \right\vert_{\left(x_0, y_0\right)}``.
+"""
+
+# ╔═╡ ccd642b0-2d8b-11eb-150a-f1ce567ecee1
+md"""
+## Chain rule
+
+The chain rule for *univariate* functions ``f:\mathbb{R}\to\mathbb{R}`` and ``x:\mathbb{R}\to\mathbb{R}`` states that the derivative of ``f\left(x\left(t\right)\right)`` is:
+
+```math
+f'\left(x\left(t\right)\right)\dot{x}\left(t\right) \qquad \text{or} \qquad \frac{\mathrm{d} f}{\mathrm{d} t} = \frac{\mathrm{d} f}{\mathrm{d} x} \frac{\mathrm{d} x}{\mathrm{d} t}
+```
+
+The chain rule for a *multivariable* function ``f:\mathbb{R}^2\to\mathbb{R}`` and *univariate* functions ``x:\mathbb{R}\to\mathbb{R}`` and ``y:\mathbb{R}\to\mathbb{R}`` states that the derivative of ``f\left(x\left(t\right), y\left(t\right)\right)`` is:
+
+```math
+\frac{\mathrm{d} f}{\mathrm{d} t} = \frac{\partial f}{\partial x} \frac{\mathrm{d} x}{\mathrm{d} t} + \frac{\partial f}{\partial y} \frac{\mathrm{d} y}{\mathrm{d} t}
+```
+
+The functions ``x(t)`` and ``y(t)`` define a 2-dimentional *trajectory*. The derivative ``\frac{\mathrm{d} f}{\mathrm{d} t}`` is the derivative along this trajectory. 
+"""
+
+# ╔═╡ 744d6c50-2a0b-11eb-02c8-bd9f527a8d42
+md"""
+## Gradients
+
+The **gradient** of a multivariate function ``f\left(x,y\right)`` at a point ``\left(x_0, y_0\right)`` is defined as a **vector** of the *partial derivatives* of ``f``:
+
+```math
+\left. \vec{\nabla} f \right\vert_{\left(x_0, y_0\right)} = \left({\left. \frac{\partial f}{\partial x} \right\vert_{\left(x_0, y_0\right)}, \left. \frac{\partial f}{\partial y} \right\vert_{\left(x_0, y_0\right)}}\right).
+```
+
+**Note:** The notation ``\nabla`` is pronounced *"nabla"* (no, it is not a greek letter). In MS Word or ``\LaTeX`` use `\nabla` to produce it. 
+"""
+
+# ╔═╡ 0a6d50f0-3426-11eb-33a1-199a74a6f449
+md"""
+
+The *directional derivative* of ``f\left(x,y\right)`` with respect to a unit vector ``u`` at a point ``\left(x_0, y_0\right)`` can be expressed using the *gradient* of ``f`` at ``\left(x_0, y_0\right)``: 
+
+```math
+\left. D_{\vec{u}}f \right\vert_{\left(x_0, y_0\right)} = \left. \vec{\nabla} f \right\vert_{\left(x_0, y_0\right)} \cdot \vec{u},
+```
+
+where ``\cdot`` is the standard inner product over ``\mathbb{R}^2`` (*i.e.* ``\vec{a\vphantom{b}}\cdot\vec{b}=a_1 b_1 + a_2 b_2``). 
+\
+This result allows us to gain a geometrical perspective about the *gradient*. Note that ``\vec{a\vphantom{b}}\cdot\vec{b} = \left\Vert \vec{a\vphantom{b}} \right\Vert \left\Vert \vec{b} \right\Vert \cos{\alpha}`` where ``\alpha`` is the angle between the vectors ``\vec{a\vphantom{b}}`` and ``\vec{b}``. We defined ``\vec{u}`` to be a unit vector, so: 
+
+```math
+\left. D_{\vec{u}}f \right\vert_{\left(x_0, y_0\right)} = \left. \vec{\nabla} f \right\vert_{\left(x_0, y_0\right)} \cdot \vec{u} = \left\Vert \left. \vec{\nabla} f \right\vert_{\left(x_0, y_0\right)} \right\Vert \left\Vert \vec{u} \vphantom{\left. \vec{\nabla} f \right\vert_{\left(x_0, y_0\right)}}\right\Vert \cos{\alpha} = \left\Vert \left. \vec{\nabla} f \right\vert_{\left(x_0, y_0\right)} \right\Vert \cos{\alpha}.
+```
+
+From this we can gain several insights: 
+
+- The **maximal value** of the *directional derivative* in the direction of ``\vec{u}`` is obtained *if and only if* ``\vec{u}`` is at **the same direction as the _gradient_**, since then (and only then) we will get ``\cos{\alpha} = 1``. 
+
+    - In this case the *directional derivative* will be *nonnegative*, thus the function will usualy **increase in the direction of the gradient**. 
+
+- The **minimal value** of the *directional derivative* in the direction of ``\vec{u}`` is obtained *if and only if* ``\vec{u}`` is at **the opposite direction of the _gradient_**, since then (and only then) we will get ``\cos{\alpha} = -1``. 
+
+    - In this case the *directional derivative* will be *nonpositive*, thus the function will usualy **decrease in the direction opposite to that of the gradient**.
+
+- The *gradient* is **perpendicular** the the level curves (curves of constant height ``f\left(x,y\right) = C``, see contour plots), because the *directional derivative* in their direction must be ``0``, and that is possible *if and only if* ``\cos{\alpha} = 0``. 
+"""
+
+# ╔═╡ 08778ee0-2a77-11eb-296c-453f1932bf58
+md"""
+Now we can have a look at the gradients of ``f(x,y)`` at many different points simultaneously: 
+
+**Note:** The displayed *gradient* vectors are *rescaled* for better visualization. 
+"""
+
+# ╔═╡ a89bad10-341e-11eb-31b8-2d7460800706
+begin
+	# FUTURE: TOC should be a part of PlutoUI in the near future. Once that happens,  remove this cell
 	
-	## Multivariable functions
+	import Markdown: withtag
 	
-	**Multivariable functions**  are mappings of inputs from a high-dimensional domain to the real line, *i.e.* ``f:\mathbb{R}^n\to\mathbb{R}``. For simplicity, we will focus here on functions from a 2-dimensional domain, *i.e.*  ``f:\mathbb{R}^2\to\mathbb{R}``, though the definitions and results are quite general. 
-	
-	For example:
-	\
-	``f\left(x, y\right) = `` $(@bind fₑₓᵗ TextField(default = "x^2 + 3x*y + y - 1"))
-	
-	Select a predefined function $(@bind f_type Select(["ex" => "User's", "quad" => "Paraboloid", "gmin" => "Simple", "complex" => "Complex"], default = "ex"))
+	"""Generate Table of Contents using Markdown cells. Headers h1-h6 are used. 
+	`title` header to this element, defaults to "Table of Contents"
+	`indent` flag indicating whether to vertically align elements by hierarchy
+	`depth` value to limit the header elements, should be in range 1 to 6 (default = 3)
+	`aside` fix the element to right of page, defaults to true
+	# Examples:
+	`TableOfContents()`
+	`TableOfContents("Experiments 🔬")`
+	`TableOfContents("📚 Table of Contents", true, 4, true)`
 	"""
-end
+	struct TableOfContents
+		title::AbstractString
+		indent::Bool
+		depth::Int
+		aside::Bool
+	end
+	TableOfContents(title::AbstractString; indent::Bool=true, depth::Int=3, aside::Bool=true) = TableOfContents(title, indent, depth, aside)
+	TableOfContents() = TableOfContents("Table of Contents", true, 3, true)
+
+	function Base.show(io::IO, ::MIME"text/html", toc::TableOfContents)
+
+		if toc.title === nothing || toc.title === missing 
+			toc.title = ""
+		end
+
+		withtag(io, :script) do
+			print(io, """
+				if (document.getElementById("toc") !== null){
+					return html`<div>TableOfContents already added. Cannot add another.</div>`
+				}
+				const getParentCellId = el => {
+					// Traverse up the DOM tree until you reach a pluto-cell
+					while (el.nodeName != 'PLUTO-CELL') {
+						el = el.parentNode;
+						if (!el) return null;
+					}
+					return el.id;
+				}     
+				const getElementsByNodename = nodeName => Array.from(
+					document.querySelectorAll(
+						"pluto-notebook pluto-output " + nodeName
+					)
+				).map(el => {
+					return {
+						"nodeName" : el.nodeName,
+						"parentCellId": getParentCellId(el),
+						"innerText": el.innerText
+					}
+				})
+
+				const getPlutoCellIds = () => Array.from(
+					document.querySelectorAll(
+						"pluto-notebook pluto-cell"
+					)
+				).map(el => el.id)
+
+				const isSelf = el => {
+					try {
+						return el.childNodes[1].id === "toc"
+					} catch {                    
+					}
+					return false
+				}            
+				const getHeaders = () => {
+					const depth = Math.max(1, Math.min(6, $(toc.depth))) // should be in range 1:6
+					const range = Array.from({length: depth}, (x, i) => i+1) // [1, ... depth]
+					let headers = [].concat.apply([], range.map(i => getElementsByNodename("h"+i))); // flatten [[h1s...], [h2s...], ...]
+					const plutoCellIds = getPlutoCellIds()
+					headers.sort((a,b) => plutoCellIds.indexOf(a.parentCellId) - plutoCellIds.indexOf(b.parentCellId)); // sort in the order of appearance
+					return headers
+				}
+				const tocIndentClass = '$(toc.indent ? "-indent" : "")'
+				const render = (el) => `\${el.map(h => `<div class="toc-row">
+												<a class="\${h.nodeName}\${tocIndentClass}" 
+													href="#\${h.parentCellId}" 
+													onmouseover="(()=>{document.getElementById('\${h.parentCellId}').firstElementChild.classList.add('highlight-pluto-cell-shoulder')})()" 
+													onmouseout="(()=>{document.getElementById('\${h.parentCellId}').firstElementChild.classList.remove('highlight-pluto-cell-shoulder')})()"
+													onclick="((e)=>{
+														e.preventDefault();
+														document.getElementById('\${h.parentCellId}').scrollIntoView({
+															behavior: 'smooth', 
+															block: 'center'
+														});
+													})(event)"
+													> \${h.innerText}</a>
+											</div>`).join('')}`
+				const updateCallback = e => {
+					if (isSelf(e.detail.cell_id)) return
+					document.getElementById('toc-content').innerHTML = render(getHeaders())                
+				}
+				window.addEventListener('cell_output_changed', updateCallback)
+				const tocClass = '$(toc.aside ? "toc-aside" : "")'
+				return html`<div class=\${tocClass} id="toc">
+								<div class="markdown">
+									<p class="toc-title">$(toc.title)</p>
+									<div class="toc-content" id="toc-content">
+											\${render(getHeaders())}
+									</div>
+								</div>
+							</div>`
+			""")
+		end
+
+		withtag(io, :style) do        
+			print(io, """
+				@media screen and (min-width: 1081px) {
+					.toc-aside {
+						position:fixed; 
+						right: 1rem;
+						top: 5rem; 
+						width:25%; 
+						padding: 10px;
+						border: 3px solid rgba(0, 0, 0, 0.15);
+						border-radius: 10px;
+						box-shadow: 0 0 11px 0px #00000010;
+						max-height: 500px;
+						overflow: auto;
+					}
+				}    
+				.toc-title{
+					display: block;
+					font-size: 1.5em;
+					margin-top: 0.67em;
+					margin-bottom: 0.67em;
+					margin-left: 0;
+					margin-right: 0;
+					font-weight: bold;
+					border-bottom: 2px solid rgba(0, 0, 0, 0.15);
+				}
+				.toc-row {
+					white-space: nowrap;
+					overflow: hidden;
+					text-overflow: ellipsis;
+					padding-bottom: 2px;
+				}
+				.highlight-pluto-cell-shoulder {
+					background: rgba(0, 0, 0, 0.05);
+					background-clip: padding-box;
+				}
+				a {
+					text-decoration: none;
+					font-weight: normal;
+					color: gray;
+				}
+				a:hover {
+					color: black;
+				}
+				a.H1-indent {
+					padding: 0px 0px;
+				}
+				a.H2-indent {
+					padding: 0px 10px;
+				}
+				a.H3-indent {
+					padding: 0px 20px;
+				}
+				a.H4-indent {
+					padding: 0px 30px;
+				}
+				a.H5-indent {
+					padding: 0px 40px;
+				}
+				a.H6-indent {
+					padding: 0px 50px;
+				}
+				""")
+		end
+	end
+
+	get(toc::TableOfContents) = toc.default
+end;
+
+# ╔═╡ 508fa3f0-3424-11eb-2ede-b39c57dc7323
+md"""
+For example:
+\
+``f\left(x, y\right) = `` $(@bind fₑₓᵗ TextField(default = "x^2 + 3x*y + y - 1"))
+
+Select a predefined function $(@bind f_type Select(["ex" => "User's", "quad" => "Paraboloid", "gmin" => "Simple", "complex" => "Complex"], default = "ex"))
+"""
 
 # ╔═╡ 75a0a510-29af-11eb-2005-dfb6db948065
 begin
@@ -515,7 +791,7 @@ end;
 begin
 	plotlyjs(size = (675, 675))
 	
-	dg = 0.05
+	dg = 0.1
 	gx₁ = -box_lim:dg:box_lim
 	gy₁ = -box_lim:dg:box_lim
 	plot_2d_base(gx₁, gy₁)
@@ -530,24 +806,8 @@ begin
 		linecolor = plot_cols[7], linewidth = 1.5)
 end
 
-# ╔═╡ 859be820-29ec-11eb-2053-97a2830c8a8d
+# ╔═╡ 9963e5a2-3424-11eb-0a11-61ac2cfd603f
 md"""
-## Partial derivatives
-
-The **partial derivative** of the multivariable function ``f\left(x,y\right)`` with respect to ``x`` at the point ``\left(x_0, y_0\right)`` is defined by keeping ``y`` constant at ``y_0``, thus effectively turning ``f\left(x, y\right)`` into a *single variable* function ``f\left(x, y_0\right)``: 
-
-```math
-\left. \frac{\partial f}{\partial x}\right\vert_{\left(x_0, y_0\right)} = \left. \frac{\mathrm{d}}{\mathrm{d}x} f\left(x, y_0\right) \right|_{x = x_0}= \lim_{h\to 0} {\frac{f\left(x_0 + h, y_0\right) - f\left(x_0, y_0\right)}{h}}.
-```
-
-**Note:** The notation ``\partial`` is pronounced *"dee"* (same as a regular ``\mathrm{d}``), but in mathematics it is used for different purposes.  We will use ``\mathrm{d}`` for regular derivatives and ``\partial`` for partial derivatives. In MS Word or ``\LaTeX`` use `\partial` to produce it. 
-
-Similarly, the partial derivative of ``f\left(x,y\right)`` with respect to ``y`` at the point ``\left(x_0, y_0\right)`` is defined by keeping ``x`` constant at ``x_0``: 
-
-```math
-\left. \frac{\partial f}{\partial y}\right\vert_{\left(x_0, y_0\right)} = \left. \frac{\mathrm{d}}{\mathrm{d}y} f\left(x_0, y\right) \right|_{y = y_0}= \lim_{h\to 0} {\frac{f\left(x_0, y_0 + h\right) - f\left(x_0, y_0\right)}{h}}.
-```
-
 Let's have a look at these derivatives! 
 Choose a point: 
 \
@@ -563,18 +823,8 @@ begin
 	plot_partials(x₀, y₀, col_x = plot_cols[1], col_y = plot_cols[2])
 end
 
-# ╔═╡ cb617850-29ee-11eb-2e28-a99ff45f2ed1
+# ╔═╡ b2a44872-3424-11eb-21a3-57d953fa7af9
 md"""
-## Directional derivative
-
-The **directional derivative** of ``f\left(x,y\right)`` with respect to a *unit vector* ``\vec{u}=\left(u_1, u_2\right)`` at a point ``\left(x_0, y_0\right)`` is defined by keeping the function constant in any direction orthogonal to ``\vec{u}``, thus essentially turning ``f\left(x, y\right)`` into a *single variable* function (similarly to *partial derivatives*): 
-
-```math
-\left. D_{\vec{u}}f \right\vert_{\left(x_0, y_0\right)} = \left. \frac{\mathrm{d} f}{\mathrm{d} s}\right\vert_{\vec{u}, \left(x_0, y_0\right)} = \lim_{s\to 0} {\frac{f\left(x_0 + s\cdot u_1, y_0 + s\cdot u_2\right) - f\left(x_0, y_0\right)}{s}}\qquad \text{where } \left\Vert \vec{u} \right\Vert = 1.
-```
-	
-**Note:** the *directional derivative* ``\left. D_{\left(1, 0\right)}f  \right\vert_{\left(x_0, y_0\right)}`` actually coincides with the definition of the *partial derivative* ``\left. \frac{\partial f}{\partial x} \right\vert_{\left(x_0, y_0\right)}``. Similarly, ``\left. D_{\left(0, 1\right)}f  \right\vert_{\left(x_0, y_0\right)} = \left. \frac{\partial f}{\partial y} \right\vert_{\left(x_0, y_0\right)}``.
-
 Let's have a look at such a derivative! 
 Change the direction: 
 \
@@ -598,24 +848,8 @@ begin
 	plot_directional(x₀, y₀, θ, col = plot_cols[3])
 end
 
-# ╔═╡ ccd642b0-2d8b-11eb-150a-f1ce567ecee1
+# ╔═╡ cdf98180-3424-11eb-0e56-6bc18e1742dc
 md"""
-## Chain rule
-
-The chain rule for *univariate* functions ``f:\mathbb{R}\to\mathbb{R}`` and ``x:\mathbb{R}\to\mathbb{R}`` states that the derivative of ``f\left(x\left(t\right)\right)`` is:
-
-```math
-f'\left(x\left(t\right)\right)\dot{x}\left(t\right) \qquad \text{or} \qquad \frac{\mathrm{d} f}{\mathrm{d} t} = \frac{\mathrm{d} f}{\mathrm{d} x} \frac{\mathrm{d} x}{\mathrm{d} t}
-```
-
-The chain rule for a *multivariable* function ``f:\mathbb{R}^2\to\mathbb{R}`` and *univariate* functions ``x:\mathbb{R}\to\mathbb{R}`` and ``y:\mathbb{R}\to\mathbb{R}`` states that the derivative of ``f\left(x\left(t\right), y\left(t\right)\right)`` is:
-
-```math
-\frac{\mathrm{d} f}{\mathrm{d} t} = \frac{\partial f}{\partial x} \frac{\mathrm{d} x}{\mathrm{d} t} + \frac{\partial f}{\partial y} \frac{\mathrm{d} y}{\mathrm{d} t}
-```
-
-The functions ``x(t)`` and ``y(t)`` define a 2-dimentional *trajectory*. The derivative ``\frac{\mathrm{d} f}{\mathrm{d} t}`` is the derivative along this trajectory. 
-
 Let's have a look at ``f`` and its derivative along the trajectory! Choose a trajectory:
 \
 ``x(t) = `` $(@bind xₑₓᵗ TextField(default = "5t"))
@@ -650,44 +884,8 @@ begin
 	plot_chain_rule(x, y, dx, dy, t; col = plot_cols[6])
 end
 
-# ╔═╡ 744d6c50-2a0b-11eb-02c8-bd9f527a8d42
+# ╔═╡ e70a6fde-3424-11eb-1940-b9e17aeacbd4
 md"""
-## Gradients
-
-The **gradient** of a multivariate function ``f\left(x,y\right)`` at a point ``\left(x_0, y_0\right)`` is defined as a **vector** of the *partial derivatives* of ``f``:
-
-```math
-\left. \vec{\nabla} f \right\vert_{\left(x_0, y_0\right)} = \left({\left. \frac{\partial f}{\partial x} \right\vert_{\left(x_0, y_0\right)}, \left. \frac{\partial f}{\partial y} \right\vert_{\left(x_0, y_0\right)}}\right).
-```
-
-**Note:** The notation ``\nabla`` is pronounced *"nabla"* (no, it is not a greek letter). In MS Word or ``\LaTeX`` use `\nabla` to produce it. 
-
-The *directional derivative* of ``f\left(x,y\right)`` with respect to a unit vector ``u`` at a point ``\left(x_0, y_0\right)`` can be expressed using the *gradient* of ``f`` at ``\left(x_0, y_0\right)``: 
-
-```math
-\left. D_{\vec{u}}f \right\vert_{\left(x_0, y_0\right)} = \left. \vec{\nabla} f \right\vert_{\left(x_0, y_0\right)} \cdot \vec{u},
-```
-
-where ``\cdot`` is the standard inner product over ``\mathbb{R}^2`` (*i.e.* ``\vec{a\vphantom{b}}\cdot\vec{b}=a_1 b_1 + a_2 b_2``). 
-\
-This result allows us to gain a geometrical perspective about the *gradient*. Note that ``\vec{a\vphantom{b}}\cdot\vec{b} = \left\Vert \vec{a\vphantom{b}} \right\Vert \left\Vert \vec{b} \right\Vert \cos{\alpha}`` where ``\alpha`` is the angle between the vectors ``\vec{a\vphantom{b}}`` and ``\vec{b}``. We defined ``\vec{u}`` to be a unit vector, so: 
-
-```math
-\left. D_{\vec{u}}f \right\vert_{\left(x_0, y_0\right)} = \left. \vec{\nabla} f \right\vert_{\left(x_0, y_0\right)} \cdot \vec{u} = \left\Vert \left. \vec{\nabla} f \right\vert_{\left(x_0, y_0\right)} \right\Vert \left\Vert \vec{u} \vphantom{\left. \vec{\nabla} f \right\vert_{\left(x_0, y_0\right)}}\right\Vert \cos{\alpha} = \left\Vert \left. \vec{\nabla} f \right\vert_{\left(x_0, y_0\right)} \right\Vert \cos{\alpha}.
-```
-
-From this we can gain several insights: 
-
-- The **maximal value** of the *directional derivative* in the direction of ``\vec{u}`` is obtained *if and only if* ``\vec{u}`` is at **the same direction as the _gradient_**, since then (and only then) we will get ``\cos{\alpha} = 1``. 
-
-    - In this case the *directional derivative* will be *nonnegative*, thus the function will usualy **increase in the direction of the gradient**. 
-
-- The **minimal value** of the *directional derivative* in the direction of ``\vec{u}`` is obtained *if and only if* ``\vec{u}`` is at **the opposite direction of the _gradient_**, since then (and only then) we will get ``\cos{\alpha} = -1``. 
-
-    - In this case the *directional derivative* will be *nonpositive*, thus the function will usualy **decrease in the direction opposite to that of the gradient**.
-
-- The *gradient* is **perpendicular** the the level curves (curves of constant height ``f\left(x,y\right) = C``, see contour plots), because the *directional derivative* in their direction must be ``0``, and that is possible *if and only if* ``\cos{\alpha} = 0``. 
-
 Let's have a look at the gradient! Choose a point and a direction:
 \
 ``x_0`` $(@bind x⁰ Slider(-box_lim:0.1:box_lim, default = x₀, show_value = true))
@@ -719,203 +917,37 @@ begin
 	plot_gradient(x⁰, y⁰, θ⁰, col_u = plot_cols[3], col_∇ = plot_cols[7])
 end
 
-# ╔═╡ a89bad10-341e-11eb-31b8-2d7460800706
+# ╔═╡ d4149330-3423-11eb-1e10-6b077a7500d2
 begin
-	# FUTURE: TOC should be a part of PlutoUI in the near future. Once that happens,  remove all but last line
-	
-	import Markdown: withtag
-	
-	"""Generate Table of Contents using Markdown cells. Headers h1-h6 are used. 
-	`title` header to this element, defaults to "Table of Contents"
-	`indent` flag indicating whether to vertically align elements by hierarchy
-	`depth` value to limit the header elements, should be in range 1 to 6 (default = 3)
-	`aside` fix the element to right of page, defaults to true
-	# Examples:
-	`TableOfContents()`
-	`TableOfContents("Experiments 🔬")`
-	`TableOfContents("📚 Table of Contents", true, 4, true)`
-	"""
-	struct TableOfContents
-		title::AbstractString
-		indent::Bool
-		depth::Int
-		aside::Bool
-	end
-	TableOfContents(title::AbstractString; indent::Bool=true, depth::Int=3, aside::Bool=true) = TableOfContents(title, indent, depth, aside)
-	TableOfContents() = TableOfContents("Table of Contents", true, 3, true)
-
-	function Base.show(io::IO, ::MIME"text/html", toc::TableOfContents)
-
-		if toc.title === nothing || toc.title === missing 
-			toc.title = ""
-		end
-
-		withtag(io, :script) do
-			print(io, """
-				if (document.getElementById("toc") !== null){
-					return html`<div>TableOfContents already added. Cannot add another.</div>`
-				}
-				const getParentCellId = el => {
-					// Traverse up the DOM tree until you reach a pluto-cell
-					while (el.nodeName != 'PLUTO-CELL') {
-						el = el.parentNode;
-						if (!el) return null;
-					}
-					return el.id;
-				}     
-				const getElementsByNodename = nodeName => Array.from(
-					document.querySelectorAll(
-						"pluto-notebook pluto-output " + nodeName
-					)
-				).map(el => {
-					return {
-						"nodeName" : el.nodeName,
-						"parentCellId": getParentCellId(el),
-						"innerText": el.innerText
-					}
-				})
-
-				const getPlutoCellIds = () => Array.from(
-					document.querySelectorAll(
-						"pluto-notebook pluto-cell"
-					)
-				).map(el => el.id)
-
-				const isSelf = el => {
-					try {
-						return el.childNodes[1].id === "toc"
-					} catch {                    
-					}
-					return false
-				}            
-				const getHeaders = () => {
-					const depth = Math.max(1, Math.min(6, $(toc.depth))) // should be in range 1:6
-					const range = Array.from({length: depth}, (x, i) => i+1) // [1, ... depth]
-					let headers = [].concat.apply([], range.map(i => getElementsByNodename("h"+i))); // flatten [[h1s...], [h2s...], ...]
-					const plutoCellIds = getPlutoCellIds()
-					headers.sort((a,b) => plutoCellIds.indexOf(a.parentCellId) - plutoCellIds.indexOf(b.parentCellId)); // sort in the order of appearance
-					return headers
-				}
-				const tocIndentClass = '$(toc.indent ? "-indent" : "")'
-				const render = (el) => `\${el.map(h => `<div class="toc-row">
-												<a class="\${h.nodeName}\${tocIndentClass}" 
-													href="#\${h.parentCellId}" 
-													onmouseover="(()=>{document.getElementById('\${h.parentCellId}').firstElementChild.classList.add('highlight-pluto-cell-shoulder')})()" 
-													onmouseout="(()=>{document.getElementById('\${h.parentCellId}').firstElementChild.classList.remove('highlight-pluto-cell-shoulder')})()"
-													onclick="((e)=>{
-														e.preventDefault();
-														document.getElementById('\${h.parentCellId}').scrollIntoView({
-															behavior: 'smooth', 
-															block: 'center'
-														});
-													})(event)"
-													> \${h.innerText}</a>
-											</div>`).join('')}`
-				const updateCallback = e => {
-					if (isSelf(e.detail.cell_id)) return
-					document.getElementById('toc-content').innerHTML = render(getHeaders())                
-				}
-				window.addEventListener('cell_output_changed', updateCallback)
-				const tocClass = '$(toc.aside ? "toc-aside" : "")'
-				return html`<div class=\${tocClass} id="toc">
-								<div class="markdown">
-									<p class="toc-title">$(toc.title)</p>
-									<div class="toc-content" id="toc-content">
-											\${render(getHeaders())}
-									</div>
-								</div>
-							</div>`
-			""")
-		end
-
-		withtag(io, :style) do        
-			print(io, """
-				@media screen and (min-width: 1081px) {
-					.toc-aside {
-						position:fixed; 
-						right: 1rem;
-						top: 5rem; 
-						width:25%; 
-						padding: 10px;
-						border: 3px solid rgba(0, 0, 0, 0.15);
-						border-radius: 10px;
-						box-shadow: 0 0 11px 0px #00000010;
-						max-height: 500px;
-						overflow: auto;
-					}
-				}    
-				.toc-title{
-					display: block;
-					font-size: 1.5em;
-					margin-top: 0.67em;
-					margin-bottom: 0.67em;
-					margin-left: 0;
-					margin-right: 0;
-					font-weight: bold;
-					border-bottom: 2px solid rgba(0, 0, 0, 0.15);
-				}
-				.toc-row {
-					white-space: nowrap;
-					overflow: hidden;
-					text-overflow: ellipsis;
-					padding-bottom: 2px;
-				}
-				.highlight-pluto-cell-shoulder {
-					background: rgba(0, 0, 0, 0.05);
-					background-clip: padding-box;
-				}
-				a {
-					text-decoration: none;
-					font-weight: normal;
-					color: gray;
-				}
-				a:hover {
-					color: black;
-				}
-				a.H1-indent {
-					padding: 0px 0px;
-				}
-				a.H2-indent {
-					padding: 0px 10px;
-				}
-				a.H3-indent {
-					padding: 0px 20px;
-				}
-				a.H4-indent {
-					padding: 0px 30px;
-				}
-				a.H5-indent {
-					padding: 0px 40px;
-				}
-				a.H6-indent {
-					padding: 0px 50px;
-				}
-				""")
-		end
-	end
-
-	get(toc::TableOfContents) = toc.default
-	
+	dg # TODO: this hack makes the TOC run last. There should be a better solution.
 	TableOfContents("Table of Contents")
 end
 
 # ╔═╡ Cell order:
 # ╟─6fa8a130-29af-11eb-0f35-776973ddd076
+# ╟─1fab33c0-3425-11eb-2b32-55fc7cc5a06d
+# ╟─508fa3f0-3424-11eb-2ede-b39c57dc7323
 # ╟─75a0a510-29af-11eb-2005-dfb6db948065
 # ╟─3fab8fb0-29f0-11eb-058e-b1717bab59bd
 # ╟─ed15ed70-29ec-11eb-380f-139b9e82f0f6
 # ╟─859be820-29ec-11eb-2053-97a2830c8a8d
+# ╟─9963e5a2-3424-11eb-0a11-61ac2cfd603f
 # ╟─868e4b20-29af-11eb-289e-ed49c852493d
 # ╟─33e9bc80-29f3-11eb-11a7-b1cd60c8ae03
 # ╟─cb617850-29ee-11eb-2e28-a99ff45f2ed1
+# ╟─b2a44872-3424-11eb-21a3-57d953fa7af9
 # ╟─a1504642-29ee-11eb-25e9-97312b012e13
 # ╟─b35b9120-29c9-11eb-1e50-8f2c7d0a635d
 # ╟─ccd642b0-2d8b-11eb-150a-f1ce567ecee1
+# ╟─cdf98180-3424-11eb-0e56-6bc18e1742dc
 # ╟─e7612a0e-2d8f-11eb-3e0b-8da86e8dc20d
 # ╟─e533e6a0-2d8b-11eb-2a42-0fc2f7c7c276
 # ╟─744d6c50-2a0b-11eb-02c8-bd9f527a8d42
+# ╟─0a6d50f0-3426-11eb-33a1-199a74a6f449
+# ╟─e70a6fde-3424-11eb-1940-b9e17aeacbd4
 # ╟─3c6c8980-2a6d-11eb-2257-bb57b19a9d1f
 # ╟─32e938d0-2a69-11eb-017c-6b53e7d78c2e
 # ╟─08778ee0-2a77-11eb-296c-453f1932bf58
 # ╟─6990bc60-2a77-11eb-2415-b38966242435
 # ╟─a89bad10-341e-11eb-31b8-2d7460800706
+# ╟─d4149330-3423-11eb-1e10-6b077a7500d2
