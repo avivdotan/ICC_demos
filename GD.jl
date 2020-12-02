@@ -1,5 +1,5 @@
 ### A Pluto.jl notebook ###
-# v0.12.15
+# v0.12.16
 
 using Markdown
 using InteractiveUtils
@@ -20,20 +20,24 @@ begin
 	Pkg.add("PlutoUI")
 	Pkg.add("Latexify")
 	Pkg.add("Calculus")
+	Pkg.add("Reduce")
 	Pkg.add("Plots")
 	# Pkg.add("PlotlyJS")
 	using PlutoUI
 	using Latexify
 	using Calculus
+	using Reduce
 	using LinearAlgebra
 	using Plots
 	
 	# Latexify defaults
 	set_default(cdot = false, fmt = FancyNumberFormatter(3))
 	
+	# Reduce defaults
+	Algebra.on(:div)
+	
 	# Plots default colors
 	plot_cols = palette(:default)
-	cmap = :rainbow
 	
 	# Playground limits
 	box_lim = 10
@@ -45,12 +49,23 @@ begin
 end
 
 # ╔═╡ 718d6500-26b5-11eb-1d2e-27280dc0dab3
+md"""
+``f\left(x, y\right) = `` $(@bind fₑₓᵗ TextField((75, 1), default = "2x^4 + x^3*y + 2y^4 - 4(x + 5)^3 + 3(y + 7)^3 + 10(x + 5)^2 - 7(y - 7)^2 - 1"))
+"""
+
+# ╔═╡ 24bac9a0-34b8-11eb-1beb-cfec8e68d627
 begin
+	fₑₓᵗ
 	
 	md"""
-	``f\left(x, y\right) = `` $(@bind fₑₓᵗ TextField((75, 1), default = "2x^4 + x^3*y + 2y^4 - 4(x + 5)^3 + 3(y + 7)^3 + 10(x + 5)^2 - 7(y - 7)^2 - 1"))
-	
-	Select a predefined function $(@bind f_type Select(["ex" => "User's", "quad" => "Paraboloid", "gmin" => "Simple", "2min" => "Two minima", "complex" => "Complex"], default = "ex"))
+	Select a predefined function $(@bind f_type Select(
+		["ex" => "User's", 
+		 "miriam3rd" => "Paraboloid", 
+		 "quad" => "Another paraboloid",
+		 "gmin" => "Simple", 
+		 "2min" => "Two minima", 
+		 "complex" => "Complex"
+		], default = "ex"))
 	"""
 end
 
@@ -62,23 +77,25 @@ begin
 		
 		fₑₓ = Meta.parse(fₑₓᵗ)
 		
+	elseif f_type == "miriam3rd"
+
+		# fₑₓ = :(x^2 + x*y + 9y^2)
+		fₑₓ = :(2x^2+x*y+4y^2)
+		
 	elseif f_type == "quad"
 
-		# C = [ 1  -2 
-		# 	 -2  5]
-		# f(x) = (0.02x'*C*x + 10)/4
 		fₑₓ = :(x^2 - 4x*y + 5y^2)
-		
-	elseif f_type == "2min"
-		
-		fₑₓ = :(-exp(-(((x - 4)^2 + (y + 4)^2)/50)) - 
-				(3/4)*exp(-(((x + 4)^2 + (y - 4)^2)/30)))
 	
 	elseif f_type == "gmin"
 		
 		fₑₓ = :(exp(-((x^2 + y^2)/70))*
 				sin(-(x/30)) - 
 				0.01x)
+		
+	elseif f_type == "2min"
+		
+		fₑₓ = :(-exp(-(((x - 4)^2 + (y + 4)^2)/50)) - 
+				(3/4)*exp(-(((x + 4)^2 + (y - 4)^2)/30)))
 		
 	elseif f_type == "complex"
 		
@@ -90,9 +107,22 @@ begin
 	end
 	
 	# Get the gradient
-	∇fₑₓ = simplify.(differentiate(simplify(fₑₓ), [:x, :y]))
-	Δxₑₓ = simplify(:(-η * $(∇fₑₓ[1])))
-	Δyₑₓ = simplify(:(-η * $(∇fₑₓ[2])))
+	∇fₑₓ = rcall.(differentiate(fₑₓ, [:x, :y]))
+	
+	# Display Reduce expression via Latexify
+	# https://discourse.julialang.org/t/substitute-symbols-in-expression/23099
+	function rep!(e, old, new)
+		for (i,a) in enumerate(e.args)
+			if a==old
+				e.args[i] = new
+			elseif a isa Expr
+				rep!(a, old, new)
+			end
+			## otherwise do nothing
+		end
+		return e
+	end
+	disp_expr(expr) = rep!(expr, :ℯ, :e)
 	
 	# Convert to f(x⃗)
 	eval(:(fˣʸ(x, y) = $fₑₓ))
@@ -111,23 +141,34 @@ begin
 	md"""
 	``f\left(x,y\right) = `` $(latexify(fₑₓ))
 	
-	 $(latexify(:(∇f = $∇fₑₓ)))
+	 $(latexify(:(∇f = $(disp_expr.(∇fₑₓ)))))
 	
 	Update rules:
-	\
-	 $(latexify(:(Δx = $Δxₑₓ)))
-	\
-	 $(latexify(:(Δy = $Δyₑₓ)))
 	
-	**Note:** ``z``-axiz is automatically  *shifted* and *rescaled* for visualization purposes.
-	
-	``\:`` $(@bind redraw_w₀ Button("Draw initial guess"))
-	``\qquad``
-	``\eta`` $(@bind η Slider(0.1:0.1:10, default = 1, show_value = true))
-	``\qquad``
-	\# of steps $(@bind T Slider(0:1000, default = 0, show_value = true))
+	```math
+	\begin{eqnarray}
+	\\
+	&&\Delta x_n &= -\eta \left. \frac{\partial f}{\partial x} \right\vert_{\left(x_n, y_n\right)}&&
+	,\quad
+	\Delta y_n &= -\eta \left. \frac{\partial f}{\partial y} \right\vert_{\left(x_n, y_n\right)}&&
+	\\
+	&&x_{n+1} &= x_n + \Delta x_n&&
+	,\quad
+	y_{n+1} &= y_n + \Delta y_n&&
+	\\
+	\end{eqnarray}
+	```
 	"""
 end
+
+# ╔═╡ b7f850a0-34d3-11eb-16f9-e3a421c96735
+md"""
+``\:`` $(@bind redraw_w₀ Button("Draw initial guess"))
+``\qquad``
+``\eta`` $(@bind η Slider(0.1:0.1:10, default = 1, show_value = true))
+``\qquad``
+\# of steps $(@bind T Slider(0:1000, default = 0, show_value = true))
+"""
 
 # ╔═╡ 5e198190-2cfd-11eb-2b6e-93daedb94e98
 begin
@@ -155,24 +196,19 @@ begin
 	curr_∇f = ∇f(w)
 	next_Δw = -η*curr_∇f
 	
+	x_names = ["x", "y"]
+	x_expr(i) = "$(x_names[i])_{$T} &= $(latexify(w[i], env = :raw))&"
+	pos_str = "&&\\text{Current position:}\\quad&" * x_expr(1) * ",\\quad " * x_expr(2)
+	∇x_expr(i) = "\\left. \\frac{\\partial f}{\\partial $(x_names[i])} \\right\\vert_{\\left($(x_names[1])_{$T}, $(x_names[2])_{$T}\\right)} &= $(latexify(curr_∇f[i], env = :raw))&"
+	grad_str = "&&\\text{Current gradient:}\\quad&" * ∇x_expr(1) * ",\\quad " * ∇x_expr(2)
+	Δx_expr(i) = "\\Delta $(x_names[i])_{$T} &= $(latexify(next_Δw[i], env = :raw))&"
+	delta_str = "&&\\text{Next update:}\\quad&" * Δx_expr(1) * ",\\quad " * Δx_expr(2)
+	status_str = "\$ \\begin{eqnarray} \\\\ " * pos_str * "\\\\" * grad_str * "\\\\" * delta_str * " \\\\ \\end{eqnarray} \$"
+	
 	md"""
-	Current position: 
-	\
-	``x = `` $(latexify(w[1]))
-	``\qquad``
-	``y = `` $(latexify(w[2]))
+	 $status_str
 	
-	Current gradient: 
-	\
-	``\frac{\partial f}{\partial x} = `` $(latexify(curr_∇f[1]))
-	``\qquad``
-	``\frac{\partial f}{\partial y} = `` $(latexify(curr_∇f[2]))
-	
-	Next update: 
-	\
-	``Δx = `` $(latexify(next_Δw[1]))
-	``\qquad``
-	``Δy = `` $(latexify(next_Δw[2]))
+	**Note:** ``z``-axiz is automatically  *shifted* and *rescaled* for visualization purposes.
 	"""
 end
 
@@ -227,7 +263,9 @@ end
 # ╔═╡ Cell order:
 # ╟─9653d710-269d-11eb-0499-3d429fa4086e
 # ╟─718d6500-26b5-11eb-1d2e-27280dc0dab3
+# ╟─24bac9a0-34b8-11eb-1beb-cfec8e68d627
 # ╟─b0df8b00-2cf2-11eb-2a76-1d4bcfbed48a
+# ╟─b7f850a0-34d3-11eb-16f9-e3a421c96735
 # ╟─5e198190-2cfd-11eb-2b6e-93daedb94e98
 # ╟─a2c8c110-26af-11eb-0577-25ecbeb860e8
 # ╟─30ee8b80-269e-11eb-1d38-6928957188f3
