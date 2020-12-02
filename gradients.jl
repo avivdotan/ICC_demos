@@ -41,114 +41,9 @@ begin
 	z_lim = 10
 end;
 
-# ╔═╡ 1fab33c0-3425-11eb-2b32-55fc7cc5a06d
+# ╔═╡ 9015a180-348a-11eb-3fd1-6bf817164c9f
 md"""
 # Partial Derivatives, Directional Derivatives and Gradients
-
-## Multivariable functions
-
-**Multivariable functions**  are mappings of inputs from a high-dimensional domain to the real line, *i.e.* ``f:\mathbb{R}^n\to\mathbb{R}``. For simplicity, we will focus here on functions from a 2-dimensional domain, *i.e.*  ``f:\mathbb{R}^2\to\mathbb{R}``, though the definitions and results are quite general. 
-"""
-
-# ╔═╡ 859be820-29ec-11eb-2053-97a2830c8a8d
-md"""
-## Partial derivatives
-
-The **partial derivative** of the multivariable function ``f\left(x,y\right)`` with respect to ``x`` at the point ``\left(x_0, y_0\right)`` is defined by keeping ``y`` constant at ``y_0``, thus effectively turning ``f\left(x, y\right)`` into a *single variable* function ``f\left(x, y_0\right)``: 
-
-```math
-\left. \frac{\partial f}{\partial x}\right\vert_{\left(x_0, y_0\right)} = \left. \frac{\mathrm{d}}{\mathrm{d}x} f\left(x, y_0\right) \right|_{x = x_0}= \lim_{h\to 0} {\frac{f\left(x_0 + h, y_0\right) - f\left(x_0, y_0\right)}{h}}.
-```
-
-**Note:** The notation ``\partial`` is pronounced *"dee"* (same as a regular ``\mathrm{d}``), but in mathematics it is used for different purposes.  We will use ``\mathrm{d}`` for regular derivatives and ``\partial`` for partial derivatives. In MS Word or ``\LaTeX`` use `\partial` to produce it. 
-
-Similarly, the partial derivative of ``f\left(x,y\right)`` with respect to ``y`` at the point ``\left(x_0, y_0\right)`` is defined by keeping ``x`` constant at ``x_0``: 
-
-```math
-\left. \frac{\partial f}{\partial y}\right\vert_{\left(x_0, y_0\right)} = \left. \frac{\mathrm{d}}{\mathrm{d}y} f\left(x_0, y\right) \right|_{y = y_0}= \lim_{h\to 0} {\frac{f\left(x_0, y_0 + h\right) - f\left(x_0, y_0\right)}{h}}.
-```
-"""
-
-# ╔═╡ cb617850-29ee-11eb-2e28-a99ff45f2ed1
-md"""
-## Directional derivative
-
-The **directional derivative** of ``f\left(x,y\right)`` with respect to a *unit vector* ``\vec{u}=\left(u_1, u_2\right)`` at a point ``\left(x_0, y_0\right)`` is defined by keeping the function constant in any direction orthogonal to ``\vec{u}``, thus essentially turning ``f\left(x, y\right)`` into a *single variable* function (similarly to *partial derivatives*): 
-
-```math
-\left. D_{\vec{u}}f \right\vert_{\left(x_0, y_0\right)} = \left. \frac{\mathrm{d} f}{\mathrm{d} s}\right\vert_{\vec{u}, \left(x_0, y_0\right)} = \lim_{s\to 0} {\frac{f\left(x_0 + s\cdot u_1, y_0 + s\cdot u_2\right) - f\left(x_0, y_0\right)}{s}}\qquad \text{where } \left\Vert \vec{u} \right\Vert = 1.
-```
-	
-**Note:** the *directional derivative* ``\left. D_{\left(1, 0\right)}f  \right\vert_{\left(x_0, y_0\right)}`` actually coincides with the definition of the *partial derivative* ``\left. \frac{\partial f}{\partial x} \right\vert_{\left(x_0, y_0\right)}``. Similarly, ``\left. D_{\left(0, 1\right)}f  \right\vert_{\left(x_0, y_0\right)} = \left. \frac{\partial f}{\partial y} \right\vert_{\left(x_0, y_0\right)}``.
-"""
-
-# ╔═╡ ccd642b0-2d8b-11eb-150a-f1ce567ecee1
-md"""
-## Chain rule
-
-The chain rule for *univariate* functions ``f:\mathbb{R}\to\mathbb{R}`` and ``x:\mathbb{R}\to\mathbb{R}`` states that the derivative of ``f\left(x\left(t\right)\right)`` is:
-
-```math
-f'\left(x\left(t\right)\right)\dot{x}\left(t\right) \qquad \text{or} \qquad \frac{\mathrm{d} f}{\mathrm{d} t} = \frac{\mathrm{d} f}{\mathrm{d} x} \frac{\mathrm{d} x}{\mathrm{d} t}
-```
-
-The chain rule for a *multivariable* function ``f:\mathbb{R}^2\to\mathbb{R}`` and *univariate* functions ``x:\mathbb{R}\to\mathbb{R}`` and ``y:\mathbb{R}\to\mathbb{R}`` states that the derivative of ``f\left(x\left(t\right), y\left(t\right)\right)`` is:
-
-```math
-\frac{\mathrm{d} f}{\mathrm{d} t} = \frac{\partial f}{\partial x} \frac{\mathrm{d} x}{\mathrm{d} t} + \frac{\partial f}{\partial y} \frac{\mathrm{d} y}{\mathrm{d} t}
-```
-
-The functions ``x(t)`` and ``y(t)`` define a 2-dimentional *trajectory*. The derivative ``\frac{\mathrm{d} f}{\mathrm{d} t}`` is the derivative along this trajectory. 
-"""
-
-# ╔═╡ 744d6c50-2a0b-11eb-02c8-bd9f527a8d42
-md"""
-## Gradients
-
-The **gradient** of a multivariate function ``f\left(x,y\right)`` at a point ``\left(x_0, y_0\right)`` is defined as a **vector** of the *partial derivatives* of ``f``:
-
-```math
-\left. \vec{\nabla} f \right\vert_{\left(x_0, y_0\right)} = \left({\left. \frac{\partial f}{\partial x} \right\vert_{\left(x_0, y_0\right)}, \left. \frac{\partial f}{\partial y} \right\vert_{\left(x_0, y_0\right)}}\right).
-```
-
-**Note:** The notation ``\nabla`` is pronounced *"nabla"* (no, it is not a greek letter). In MS Word or ``\LaTeX`` use `\nabla` to produce it. 
-"""
-
-# ╔═╡ 0a6d50f0-3426-11eb-33a1-199a74a6f449
-md"""
-
-The *directional derivative* of ``f\left(x,y\right)`` with respect to a unit vector ``u`` at a point ``\left(x_0, y_0\right)`` can be expressed using the *gradient* of ``f`` at ``\left(x_0, y_0\right)``: 
-
-```math
-\left. D_{\vec{u}}f \right\vert_{\left(x_0, y_0\right)} = \left. \vec{\nabla} f \right\vert_{\left(x_0, y_0\right)} \cdot \vec{u},
-```
-
-where ``\cdot`` is the standard inner product over ``\mathbb{R}^2`` (*i.e.* ``\vec{a\vphantom{b}}\cdot\vec{b}=a_1 b_1 + a_2 b_2``). 
-\
-This result allows us to gain a geometrical perspective about the *gradient*. Note that ``\vec{a\vphantom{b}}\cdot\vec{b} = \left\Vert \vec{a\vphantom{b}} \right\Vert \left\Vert \vec{b} \right\Vert \cos{\alpha}`` where ``\alpha`` is the angle between the vectors ``\vec{a\vphantom{b}}`` and ``\vec{b}``. We defined ``\vec{u}`` to be a unit vector, so: 
-
-```math
-\left. D_{\vec{u}}f \right\vert_{\left(x_0, y_0\right)} = \left. \vec{\nabla} f \right\vert_{\left(x_0, y_0\right)} \cdot \vec{u} = \left\Vert \left. \vec{\nabla} f \right\vert_{\left(x_0, y_0\right)} \right\Vert \left\Vert \vec{u} \vphantom{\left. \vec{\nabla} f \right\vert_{\left(x_0, y_0\right)}}\right\Vert \cos{\alpha} = \left\Vert \left. \vec{\nabla} f \right\vert_{\left(x_0, y_0\right)} \right\Vert \cos{\alpha}.
-```
-
-From this we can gain several insights: 
-
-- The **maximal value** of the *directional derivative* in the direction of ``\vec{u}`` is obtained *if and only if* ``\vec{u}`` is at **the same direction as the _gradient_**, since then (and only then) we will get ``\cos{\alpha} = 1``. 
-
-    - In this case the *directional derivative* will be *nonnegative*, thus the function will usualy **increase in the direction of the gradient**. 
-
-- The **minimal value** of the *directional derivative* in the direction of ``\vec{u}`` is obtained *if and only if* ``\vec{u}`` is at **the opposite direction of the _gradient_**, since then (and only then) we will get ``\cos{\alpha} = -1``. 
-
-    - In this case the *directional derivative* will be *nonpositive*, thus the function will usualy **decrease in the direction opposite to that of the gradient**.
-
-- The *gradient* is **perpendicular** the the level curves (curves of constant height ``f\left(x,y\right) = C``, see contour plots), because the *directional derivative* in their direction must be ``0``, and that is possible *if and only if* ``\cos{\alpha} = 0``. 
-"""
-
-# ╔═╡ 08778ee0-2a77-11eb-296c-453f1932bf58
-md"""
-Now we can have a look at the gradients of ``f(x,y)`` at many different points simultaneously: 
-
-**Note:** The displayed *gradient* vectors are *rescaled* for better visualization. 
 """
 
 # ╔═╡ a89bad10-341e-11eb-31b8-2d7460800706
@@ -329,6 +224,16 @@ begin
 	get(toc::TableOfContents) = toc.default
 end;
 
+# ╔═╡ d4149330-3423-11eb-1e10-6b077a7500d2
+TableOfContents("Table of Contents")
+
+# ╔═╡ 1fab33c0-3425-11eb-2b32-55fc7cc5a06d
+md"""
+## Multivariable functions
+
+**Multivariable functions**  are mappings of inputs from a high-dimensional domain to the real line, *i.e.* ``f:\mathbb{R}^n\to\mathbb{R}``. For simplicity, we will focus here on functions from a 2-dimensional domain, *i.e.*  ``f:\mathbb{R}^2\to\mathbb{R}``, though the definitions and results are quite general. 
+"""
+
 # ╔═╡ 508fa3f0-3424-11eb-2ede-b39c57dc7323
 md"""
 For example:
@@ -449,6 +354,35 @@ begin
 	plot(p3d, p2d, layout = grid(2, 1, heights = (0.7, 0.3)))
 	
 end
+
+# ╔═╡ 859be820-29ec-11eb-2053-97a2830c8a8d
+md"""
+## Partial derivatives
+
+The **partial derivative** of the multivariable function ``f\left(x,y\right)`` with respect to ``x`` at the point ``\left(x_0, y_0\right)`` is defined by keeping ``y`` constant at ``y_0``, thus effectively turning ``f\left(x, y\right)`` into a *single variable* function ``f\left(x, y_0\right)``: 
+
+```math
+\left. \frac{\partial f}{\partial x}\right\vert_{\left(x_0, y_0\right)} = \left. \frac{\mathrm{d}}{\mathrm{d}x} f\left(x, y_0\right) \right|_{x = x_0}= \lim_{h\to 0} {\frac{f\left(x_0 + h, y_0\right) - f\left(x_0, y_0\right)}{h}}.
+```
+
+**Note:** The notation ``\partial`` is pronounced *"dee"* (same as a regular ``\mathrm{d}``), but in mathematics it is used for different purposes.  We will use ``\mathrm{d}`` for regular derivatives and ``\partial`` for partial derivatives. In MS Word or ``\LaTeX`` use `\partial` to produce it. 
+
+Similarly, the partial derivative of ``f\left(x,y\right)`` with respect to ``y`` at the point ``\left(x_0, y_0\right)`` is defined by keeping ``x`` constant at ``x_0``: 
+
+```math
+\left. \frac{\partial f}{\partial y}\right\vert_{\left(x_0, y_0\right)} = \left. \frac{\mathrm{d}}{\mathrm{d}y} f\left(x_0, y\right) \right|_{y = y_0}= \lim_{h\to 0} {\frac{f\left(x_0, y_0 + h\right) - f\left(x_0, y_0\right)}{h}}.
+```
+"""
+
+# ╔═╡ 9963e5a2-3424-11eb-0a11-61ac2cfd603f
+md"""
+Let's have a look at these derivatives! 
+Choose a point: 
+\
+``x_0`` $(@bind x₀ Slider(-box_lim:0.1:box_lim, default = round(rand((-box_lim/2):0.1:(box_lim/2)), digits = 1), show_value = true))
+\
+``y_0`` $(@bind y₀ Slider(-box_lim:0.1:box_lim, default = round(rand((-box_lim/2):0.1:(box_lim/2)), digits = 1), show_value = true))
+"""
 
 # ╔═╡ 868e4b20-29af-11eb-289e-ed49c852493d
 begin
@@ -787,41 +721,25 @@ begin
 	
 end;
 
-# ╔═╡ 6990bc60-2a77-11eb-2415-b38966242435
-begin
-	plotlyjs(size = (675, 675))
-	
-	dg = 0.1
-	gx₁ = -box_lim:dg:box_lim
-	gy₁ = -box_lim:dg:box_lim
-	plot_2d_base(gx₁, gy₁)
-	
-	gs = 1/10
-	xg = (-box_lim + gs/2):(gs*box_lim):(box_lim - gs/2)
-	yg = (-box_lim + gs/2):(gs*box_lim):(box_lim - gs/2)
-	∇ᶠ = [∇f([x, y]) for x ∈ xg, y ∈ yg]
-	∇ᶠ ./= maximum(norm.(∇ᶠ))
-	∇ᶠ = [(gf..., ) for gf ∈ ∇ᶠ]
-	quiver!(hcat([xg for y ∈ yg]...), vcat([yg' for x ∈ xg]...), quiver = ∇ᶠ, 
-		linecolor = plot_cols[7], linewidth = 1.5)
-end
-
-# ╔═╡ 9963e5a2-3424-11eb-0a11-61ac2cfd603f
-md"""
-Let's have a look at these derivatives! 
-Choose a point: 
-\
-``x_0`` $(@bind x₀ Slider(-box_lim:0.1:box_lim, default = round(rand((-box_lim/2):0.1:(box_lim/2)), digits = 1), show_value = true))
-\
-``y_0`` $(@bind y₀ Slider(-box_lim:0.1:box_lim, default = round(rand((-box_lim/2):0.1:(box_lim/2)), digits = 1), show_value = true))
-"""
-
 # ╔═╡ 33e9bc80-29f3-11eb-11a7-b1cd60c8ae03
 begin
 	# Plot directional derivative
 	plotlyjs(size = (675, 675))
 	plot_partials(x₀, y₀, col_x = plot_cols[1], col_y = plot_cols[2])
 end
+
+# ╔═╡ cb617850-29ee-11eb-2e28-a99ff45f2ed1
+md"""
+## Directional derivative
+
+The **directional derivative** of ``f\left(x,y\right)`` with respect to a *unit vector* ``\vec{u}=\left(u_1, u_2\right)`` at a point ``\left(x_0, y_0\right)`` is defined by keeping the function constant in any direction orthogonal to ``\vec{u}``, thus essentially turning ``f\left(x, y\right)`` into a *single variable* function (similarly to *partial derivatives*): 
+
+```math
+\left. D_{\vec{u}}f \right\vert_{\left(x_0, y_0\right)} = \left. \frac{\mathrm{d} f}{\mathrm{d} s}\right\vert_{\vec{u}, \left(x_0, y_0\right)} = \lim_{s\to 0} {\frac{f\left(x_0 + s\cdot u_1, y_0 + s\cdot u_2\right) - f\left(x_0, y_0\right)}{s}}\qquad \text{where } \left\Vert \vec{u} \right\Vert = 1.
+```
+	
+**Note:** the *directional derivative* ``\left. D_{\left(1, 0\right)}f  \right\vert_{\left(x_0, y_0\right)}`` actually coincides with the definition of the *partial derivative* ``\left. \frac{\partial f}{\partial x} \right\vert_{\left(x_0, y_0\right)}``. Similarly, ``\left. D_{\left(0, 1\right)}f  \right\vert_{\left(x_0, y_0\right)} = \left. \frac{\partial f}{\partial y} \right\vert_{\left(x_0, y_0\right)}``.
+"""
 
 # ╔═╡ b2a44872-3424-11eb-21a3-57d953fa7af9
 md"""
@@ -847,6 +765,25 @@ begin
 	plotlyjs(size = (675, 675))
 	plot_directional(x₀, y₀, θ, col = plot_cols[3])
 end
+
+# ╔═╡ ccd642b0-2d8b-11eb-150a-f1ce567ecee1
+md"""
+## Chain rule
+
+The chain rule for *univariate* functions ``f:\mathbb{R}\to\mathbb{R}`` and ``x:\mathbb{R}\to\mathbb{R}`` states that the derivative of ``f\left(x\left(t\right)\right)`` is:
+
+```math
+f'\left(x\left(t\right)\right)\dot{x}\left(t\right) \qquad \text{or} \qquad \frac{\mathrm{d} f}{\mathrm{d} t} = \frac{\mathrm{d} f}{\mathrm{d} x} \frac{\mathrm{d} x}{\mathrm{d} t}
+```
+
+The chain rule for a *multivariable* function ``f:\mathbb{R}^2\to\mathbb{R}`` and *univariate* functions ``x:\mathbb{R}\to\mathbb{R}`` and ``y:\mathbb{R}\to\mathbb{R}`` states that the derivative of ``f\left(x\left(t\right), y\left(t\right)\right)`` is:
+
+```math
+\frac{\mathrm{d} f}{\mathrm{d} t} = \frac{\partial f}{\partial x} \frac{\mathrm{d} x}{\mathrm{d} t} + \frac{\partial f}{\partial y} \frac{\mathrm{d} y}{\mathrm{d} t}
+```
+
+The functions ``x(t)`` and ``y(t)`` define a 2-dimentional *trajectory*. The derivative ``\frac{\mathrm{d} f}{\mathrm{d} t}`` is the derivative along this trajectory. 
+"""
 
 # ╔═╡ cdf98180-3424-11eb-0e56-6bc18e1742dc
 md"""
@@ -884,6 +821,49 @@ begin
 	plot_chain_rule(x, y, dx, dy, t; col = plot_cols[6])
 end
 
+# ╔═╡ 744d6c50-2a0b-11eb-02c8-bd9f527a8d42
+md"""
+## Gradients
+
+The **gradient** of a multivariate function ``f\left(x,y\right)`` at a point ``\left(x_0, y_0\right)`` is defined as a **vector** of the *partial derivatives* of ``f``:
+
+```math
+\left. \vec{\nabla} f \right\vert_{\left(x_0, y_0\right)} = \left({\left. \frac{\partial f}{\partial x} \right\vert_{\left(x_0, y_0\right)}, \left. \frac{\partial f}{\partial y} \right\vert_{\left(x_0, y_0\right)}}\right).
+```
+
+**Note:** The notation ``\nabla`` is pronounced *"nabla"* (no, it is not a greek letter). In MS Word or ``\LaTeX`` use `\nabla` to produce it. 
+"""
+
+# ╔═╡ 0a6d50f0-3426-11eb-33a1-199a74a6f449
+md"""
+
+The *directional derivative* of ``f\left(x,y\right)`` with respect to a unit vector ``u`` at a point ``\left(x_0, y_0\right)`` can be expressed using the *gradient* of ``f`` at ``\left(x_0, y_0\right)``: 
+
+```math
+\left. D_{\vec{u}}f \right\vert_{\left(x_0, y_0\right)} = \left. \vec{\nabla} f \right\vert_{\left(x_0, y_0\right)} \cdot \vec{u},
+```
+
+where ``\cdot`` is the standard inner product over ``\mathbb{R}^2`` (*i.e.* ``\vec{a\vphantom{b}}\cdot\vec{b}=a_1 b_1 + a_2 b_2``). 
+\
+This result allows us to gain a geometrical perspective about the *gradient*. Note that ``\vec{a\vphantom{b}}\cdot\vec{b} = \left\Vert \vec{a\vphantom{b}} \right\Vert \left\Vert \vec{b} \right\Vert \cos{\alpha}`` where ``\alpha`` is the angle between the vectors ``\vec{a\vphantom{b}}`` and ``\vec{b}``. We defined ``\vec{u}`` to be a unit vector, so: 
+
+```math
+\left. D_{\vec{u}}f \right\vert_{\left(x_0, y_0\right)} = \left. \vec{\nabla} f \right\vert_{\left(x_0, y_0\right)} \cdot \vec{u} = \left\Vert \left. \vec{\nabla} f \right\vert_{\left(x_0, y_0\right)} \right\Vert \left\Vert \vec{u} \vphantom{\left. \vec{\nabla} f \right\vert_{\left(x_0, y_0\right)}}\right\Vert \cos{\alpha} = \left\Vert \left. \vec{\nabla} f \right\vert_{\left(x_0, y_0\right)} \right\Vert \cos{\alpha}.
+```
+
+From this we can gain several insights: 
+
+- The **maximal value** of the *directional derivative* in the direction of ``\vec{u}`` is obtained *if and only if* ``\vec{u}`` is at **the same direction as the _gradient_**, since then (and only then) we will get ``\cos{\alpha} = 1``. 
+
+    - In this case the *directional derivative* will be *nonnegative*, thus the function will usualy **increase in the direction of the gradient**. 
+
+- The **minimal value** of the *directional derivative* in the direction of ``\vec{u}`` is obtained *if and only if* ``\vec{u}`` is at **the opposite direction of the _gradient_**, since then (and only then) we will get ``\cos{\alpha} = -1``. 
+
+    - In this case the *directional derivative* will be *nonpositive*, thus the function will usualy **decrease in the direction opposite to that of the gradient**.
+
+- The *gradient* is **perpendicular** the the level curves (curves of constant height ``f\left(x,y\right) = C``, see contour plots), because the *directional derivative* in their direction must be ``0``, and that is possible *if and only if* ``\cos{\alpha} = 0``. 
+"""
+
 # ╔═╡ e70a6fde-3424-11eb-1940-b9e17aeacbd4
 md"""
 Let's have a look at the gradient! Choose a point and a direction:
@@ -917,14 +897,37 @@ begin
 	plot_gradient(x⁰, y⁰, θ⁰, col_u = plot_cols[3], col_∇ = plot_cols[7])
 end
 
-# ╔═╡ d4149330-3423-11eb-1e10-6b077a7500d2
+# ╔═╡ 08778ee0-2a77-11eb-296c-453f1932bf58
+md"""
+Now we can have a look at the gradients of ``f(x,y)`` at many different points simultaneously: 
+
+**Note:** The displayed *gradient* vectors are *rescaled* for better visualization. 
+"""
+
+# ╔═╡ 6990bc60-2a77-11eb-2415-b38966242435
 begin
-	dg # TODO: this hack makes the TOC run last. There should be a better solution.
-	TableOfContents("Table of Contents")
+	plotlyjs(size = (675, 675))
+	
+	dg = 0.1
+	gx₁ = -box_lim:dg:box_lim
+	gy₁ = -box_lim:dg:box_lim
+	plot_2d_base(gx₁, gy₁)
+	
+	gs = 1/10
+	xg = (-box_lim + gs/2):(gs*box_lim):(box_lim - gs/2)
+	yg = (-box_lim + gs/2):(gs*box_lim):(box_lim - gs/2)
+	∇ᶠ = [∇f([x, y]) for x ∈ xg, y ∈ yg]
+	∇ᶠ ./= maximum(norm.(∇ᶠ))
+	∇ᶠ = [(gf..., ) for gf ∈ ∇ᶠ]
+	quiver!(hcat([xg for y ∈ yg]...), vcat([yg' for x ∈ xg]...), quiver = ∇ᶠ, 
+		linecolor = plot_cols[7], linewidth = 1.5)
 end
 
 # ╔═╡ Cell order:
 # ╟─6fa8a130-29af-11eb-0f35-776973ddd076
+# ╟─9015a180-348a-11eb-3fd1-6bf817164c9f
+# ╟─a89bad10-341e-11eb-31b8-2d7460800706
+# ╟─d4149330-3423-11eb-1e10-6b077a7500d2
 # ╟─1fab33c0-3425-11eb-2b32-55fc7cc5a06d
 # ╟─508fa3f0-3424-11eb-2ede-b39c57dc7323
 # ╟─75a0a510-29af-11eb-2005-dfb6db948065
@@ -949,5 +952,3 @@ end
 # ╟─32e938d0-2a69-11eb-017c-6b53e7d78c2e
 # ╟─08778ee0-2a77-11eb-296c-453f1932bf58
 # ╟─6990bc60-2a77-11eb-2415-b38966242435
-# ╟─a89bad10-341e-11eb-31b8-2d7460800706
-# ╟─d4149330-3423-11eb-1e10-6b077a7500d2
