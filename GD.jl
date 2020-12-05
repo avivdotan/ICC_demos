@@ -19,22 +19,17 @@ begin
 	import Pkg
 	Pkg.add("PlutoUI")
 	Pkg.add("Latexify")
-	Pkg.add("Calculus")
-	Pkg.add("Reduce")
+	Pkg.add("ForwardDiff")
 	Pkg.add("Plots")
 	# Pkg.add("PlotlyJS")
 	using PlutoUI
 	using Latexify
-	using Calculus
-	using Reduce
+	using ForwardDiff
 	using LinearAlgebra
 	using Plots
 	
 	# Latexify defaults
 	set_default(cdot = false, fmt = FancyNumberFormatter(3))
-	
-	# Reduce defaults
-	Algebra.on(:div)
 	
 	# Plots default colors
 	plot_cols = palette(:default)
@@ -106,24 +101,6 @@ begin
 		
 	end
 	
-	# Get the gradient
-	∇fₑₓ = rcall.(differentiate(fₑₓ, [:x, :y]))
-	
-	# Display Reduce expression via Latexify
-	# https://discourse.julialang.org/t/substitute-symbols-in-expression/23099
-	function rep!(e, old, new)
-		for (i,a) in enumerate(e.args)
-			if a==old
-				e.args[i] = new
-			elseif a isa Expr
-				rep!(a, old, new)
-			end
-			## otherwise do nothing
-		end
-		return e
-	end
-	disp_expr(expr) = rep!(expr, :ℯ, :e)
-	
 	# Convert to f(x⃗)
 	eval(:(fˣʸ(x, y) = $fₑₓ))
 	fᵗ(x) = fˣʸ(x[1], x[2])
@@ -136,12 +113,10 @@ begin
 	f(x) = 5(1/2 + (fᵗ(x) - f_min)/(f_max - f_min))
 	
 	# Define the gradient
-	∇f(x) = Calculus.gradient(f, x)
+	∇f(x) = ForwardDiff.gradient(f, x)
 	
 	md"""
 	``f\left(x,y\right) = `` $(latexify(fₑₓ))
-	
-	 $(latexify(:(∇f = $(disp_expr.(∇fₑₓ)))))
 	
 	Update rules:
 	
