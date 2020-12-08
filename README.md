@@ -10,7 +10,7 @@ It's best to run the notebooks using [Google Chrome](https://www.google.com/chro
 <!--  - Copy the notebook's URL and paste it [here](http://pluto-on-binder.glitch.me/). 
 - Open the output link. -->
 - Copy the notebook's name and paste it [here](https://five-orange-canopy.glitch.me/). 
-- Click Run!. 
+- Click Run! 
 - Wait, this will take some time. 
 - Play with the notebook!
 
