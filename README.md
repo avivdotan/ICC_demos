@@ -1,5 +1,4 @@
 # Introduction to Computation and Cognition (19.1.0006) - TA's Demos
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/avivdotan/ICC_demos/main)
 
 TA's demos for the ["Introduction to Computation and Cognition" course](https://moodle2.bgu.ac.il/moodle/course/view.php?id=31934) @ BGU. 
 
