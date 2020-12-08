@@ -7,8 +7,10 @@ It's best to run the notebooks using [Google Chrome](https://www.google.com/chro
 
 ## Run a notebook online
 
-- Copy the notebook's URL and paste it [here](http://pluto-on-binder.glitch.me/). 
-- Open the output link. 
+<!--  - Copy the notebook's URL and paste it [here](http://pluto-on-binder.glitch.me/). 
+- Open the output link. -->
+- Copy the notebook's name and paste it [here](https://five-orange-canopy.glitch.me/). 
+- Click Run!. 
 - Wait, this will take some time. 
 - Play with the notebook!
 
@@ -32,4 +34,4 @@ Follow the instructions [here](https://www.youtube.com/watch?v=OOjKEgbt8AI) or [
 - Choose a notebook (either a URL or a local path). 
 - Play with the notebook!
 
-**Note:** Each notebook will automatically install any missing packages and compile them *on the fly*. This means The **first runs wil be slow**, especially the first run of the first notebook using *[Plots.jl](http://docs.juliaplots.org/latest/)* (all notebooks here use it). 
+**Note:** Each notebook will automatically install any missing packages and compile them *on the fly*. This means The **first run of each notebook will be slow**, especially the first run of the first notebook using *[Plots.jl](http://docs.juliaplots.org/latest/)* (all notebooks here use it). 
