@@ -2,7 +2,7 @@
 
 TA's demos for the ["Introduction to Computation and Cognition" course](https://moodle2.bgu.ac.il/moodle/course/view.php?id=31934) @ BGU. 
 
-All notebooks are written in [julia](https://julialang.org/) using [img src="https://cdn.jsdelivr.net/gh/fonsp/Pluto.jl@0.11.11/frontend/img/logo.svg">](https://github.com/fonsp/Pluto.jl). \
+All notebooks are written in [julia](https://julialang.org/) using [Pluto.jl](https://github.com/fonsp/Pluto.jl). \
 It's best to run the notebooks using [Google Chrome](https://www.google.com/chrome/) (some plots might be rendered incorrectly in other browsers). 
 
 ## Run a notebook online
