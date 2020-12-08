@@ -9,7 +9,7 @@ It's best to run the notebooks using [Google Chrome](https://www.google.com/chro
 
 - Copy the notebook's URL and paste it [here](http://pluto-on-binder.glitch.me/). 
 - Open the output link. 
-- Go have a coffee, this will take some time. 
+- Wait, this will take some time. 
 - Play with the notebook!
 
 **Note:** Running Pluto.jl notebooks via [Binder](https://mybinder.org/) is ***slow*** (especially at loading). Some notebooks *might even fail to load* due to timeouts. Try running *locally* if possible. 
