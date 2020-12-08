@@ -14,8 +14,7 @@ It's best to run the notebooks using [Google Chrome](https://www.google.com/chro
 - Wait, this will take some time. 
 - Play with the notebook!
 
-**Note:** Running Pluto.jl notebooks via [Binder](https://mybinder.org/) is ***slow*** (especially at loading). Some notebooks *might even fail to load* due to timeouts. Try running *locally* if possible. 
-
+**Note:** Running Pluto.jl notebooks via [Binder](https://mybinder.org/) is ***slow***. Try running *locally* if possible. 
 
 ## Run a notebook locally
 
