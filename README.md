@@ -10,14 +10,10 @@ It's best to run the notebooks using [Google Chrome](https://www.google.com/chro
 
 - Copy the notebook's URL and paste it [here](http://pluto-on-binder.glitch.me/). 
 
-<div class="glitch-embed-wrap" style="height: 486px; width: 100%;">
-  <iframe
-    allow="geolocation; microphone; camera; midi; encrypted-media"
-    src="https://glitch.com/embed/#!/embed/five-orange-canopy?previewSize=100&previewFirst=true&sidebarCollapsed=true"
-    alt="five-orange-canopy on Glitch"
-    style="height: 100%; width: 100%; border: 0;">
-  </iframe>
-</div>
+<iframe
+  allow="geolocation; microphone; camera; midi; encrypted-media"
+  src="https://glitch.com/embed/#!/embed/five-orange-canopy?previewSize=100&previewFirst=true&sidebarCollapsed=true"
+</iframe>
 
 - Open the output link. 
 - Wait, this will take some time. 
