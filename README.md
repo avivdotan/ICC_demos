@@ -9,11 +9,6 @@ It's best to run the notebooks using [Google Chrome](https://www.google.com/chro
 ## Run a notebook online
 
 - Copy the notebook's URL and paste it [here](http://pluto-on-binder.glitch.me/). 
-
-<iframe
-  src="https://glitch.com/embed/#!/embed/five-orange-canopy?previewSize=100&previewFirst=true&sidebarCollapsed=true"
-</iframe>
-
 - Open the output link. 
 - Wait, this will take some time. 
 - Play with the notebook!
