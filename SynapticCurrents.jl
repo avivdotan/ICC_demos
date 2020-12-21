@@ -123,7 +123,10 @@ Number of input spikes: $(@bind n_spikes Slider(0:n_spikes_max, default = n_spik
 # ╔═╡ c9ce2bf0-3fd8-11eb-007d-1bee38f0d5e8
 begin
 	s_sample = n_spikes == 0 ? [[] for i = 1:N] : filter.(t -> t ≤ spikes[n_spikes].tᵢʲ, sample)
-	s_sample = SpikesInput(s_sample)
+	s_emp = all(isempty.(s_sample))
+	if !s_emp
+		s_sample = SpikesInput(s_sample)
+	end
 end;
 
 # ╔═╡ 73fe8270-3fd7-11eb-1e04-2bd3de2777d4
@@ -131,7 +134,6 @@ begin
 	redraw_weights
 	
 	W = θ*(1.2rand(Float64, N) .- 0.2)
-	tmp.w .= W
 end;
 
 # ╔═╡ 29976ef2-3fdb-11eb-3ba8-8d53a40da2d7
@@ -139,6 +141,11 @@ begin
 	W
 	latexify(:(w = $(W')))
 end
+
+# ╔═╡ 30950dc0-43d2-11eb-151a-f542d29c04d7
+begin
+	tmp.w .= W
+end;
 
 # ╔═╡ efc3f440-3fd6-11eb-3f88-c7dd655770cc
 begin
@@ -159,11 +166,11 @@ begin
 	Δt = 0.1 		#ms
 	time = 0:Δt:T 	#ms
 	
-	I(t) = isempty(s_sample) ? 0.0 : sum([W[i]*Iₛ(t - tᵢʲ) for i = 1:N for tᵢʲ ∈ s_sample[i]])
+	I(t) = s_emp ? 0.0 : sum([W[i]*Iₛ(t - tᵢʲ) for i = 1:N for tᵢʲ ∈ s_sample[i]])
 	
-	V(t) = isempty(s_sample) ? 0.0 : sum([psp.ΔV(t) for psp ∈ Tempotrons.get_psps(tmp, s_sample)])
+	V(t) = s_emp ? 0.0 : sum([psp.ΔV(t) for psp ∈ Tempotrons.get_psps(tmp, s_sample)])
 	
-	Vₙ = tmp(s_sample, t = collect(time)).V
+	Vₙ = s_emp ? zeros(size(time)) : tmp(s_sample, t = collect(time)).V
 end;
 
 # ╔═╡ f9788390-3fd9-11eb-32c6-c96b30195a56
@@ -217,5 +224,6 @@ end
 # ╟─de778c60-3fd6-11eb-3271-090e8ee8aeff
 # ╟─c9ce2bf0-3fd8-11eb-007d-1bee38f0d5e8
 # ╟─73fe8270-3fd7-11eb-1e04-2bd3de2777d4
+# ╟─30950dc0-43d2-11eb-151a-f542d29c04d7
 # ╟─efc3f440-3fd6-11eb-3f88-c7dd655770cc
 # ╟─aa131d2e-3fd7-11eb-264c-e1391eca9a29
